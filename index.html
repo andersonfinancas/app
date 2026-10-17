@@ -59,9 +59,12 @@ body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,sans-serif;b
 .iact{display:flex;gap:1px;margin-left:4px}
 .iact button{background:none;border:none;font-size:14px;cursor:pointer;padding:3px}
 .sep{text-align:center;font-size:11px;color:#aaa;margin:8px 0 4px;padding-top:6px;border-top:1px dashed #ddd}
-.add-row{display:flex;gap:8px;padding:10px 12px 20px}
+.add-row{display:flex;gap:8px;padding:10px 12px}
 .add-b{flex:1;padding:10px;border:2px dashed #ddd;border-radius:6px;background:none;font-size:13px;cursor:pointer;color:#666}
 .add-b:active{background:#f5f5f5}
+.pdf-row{display:flex;gap:8px;padding:5px 12px 20px}
+.pdf-b{flex:1;padding:10px;border:none;border-radius:6px;background:#1a1a2e;color:#fff;font-size:13px;cursor:pointer;font-weight:600}
+.pdf-b:active{opacity:.7}
 .mbg{display:none;position:fixed;top:0;left:0;right:0;bottom:0;background:rgba(0,0,0,.5);z-index:200;justify-content:center;align-items:center}
 .mbg.show{display:flex}
 .mdl{background:#fff;border-radius:10px;padding:16px;width:88%;max-width:360px;max-height:85vh;overflow-y:auto}
@@ -78,6 +81,10 @@ body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,sans-serif;b
 .tgl.on{background:#27ae60}
 .tgl::after{content:'';position:absolute;width:20px;height:20px;background:#fff;border-radius:50%;top:2px;left:2px;transition:.3s}
 .tgl.on::after{left:22px}
+.pdf-opt{text-align:center;margin-bottom:10px}
+.pdf-opt button{padding:10px 20px;margin:5px;border:2px solid #1a1a2e;border-radius:8px;background:#fff;color:#1a1a2e;font-size:14px;font-weight:600;cursor:pointer}
+.pdf-opt button:active{background:#1a1a2e;color:#fff}
+@media print{.hdr,.add-row,.pdf-row,.iact,.ichk,.mbg{display:none!important}.item.dn{opacity:1}.item.dn .iname{text-decoration:none}body{max-width:100%;padding:0}}
 </style>
 </head>
 <body>
@@ -92,7 +99,7 @@ body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,sans-serif;b
 </div>
 </div>
 
-<div class="chart-box">
+<div class="chart-box" id="chartBox">
 <div class="chart-ttl" id="chTtl"></div>
 <div class="chart" id="ch"></div>
 <div class="chart-res" id="chRes"></div>
@@ -103,6 +110,9 @@ body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,sans-serif;b
 <div class="add-row">
 <button class="add-b" onclick="openModal('r')">+ Receita</button>
 <button class="add-b" onclick="openModal('e')">+ Conta</button>
+</div>
+<div class="pdf-row">
+<button class="pdf-b" onclick="openPdf()">📄 Gerar PDF</button>
 </div>
 
 <div class="mbg" id="mBg">
@@ -149,18 +159,32 @@ body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,sans-serif;b
 </div>
 </div>
 
+<div class="mbg" id="pBg">
+<div class="mdl">
+<h3>📄 Gerar PDF</h3>
+<p style="font-size:13px;color:#555;margin-bottom:12px">Escolha o tipo de relatório:</p>
+<div class="pdf-opt">
+<button onclick="genPdf('month')">📅 Mês Atual</button>
+<button onclick="genPdf('year')">📊 Ano Inteiro</button>
+</div>
+<div class="mdl-btns">
+<button class="bcn" onclick="closePdf()">Cancelar</button>
+</div>
+</div>
+</div>
+
 <script>
 var MF=['Janeiro','Fevereiro','Março','Abril','Maio','Junho','Julho','Agosto','Setembro','Outubro','Novembro','Dezembro'];
 var MC=['Jan','Fev','Mar','Abr','Mai','Jun','Jul','Ago','Set','Out','Nov','Dez'];
 var EV={'2026-5':'🎯PLR','2026-8':'💰13º','2026-10':'📍Atual','2026-11':'🏖Férias','2026-12':'🎄Balão','2027-1':'🏆Plan','2027-5':'🎯PLR','2027-6':'🏆Carro','2027-7':'🏆MP'};
 var D,eId=null,eType='',mType='',yMode='',cFn=null;
 
-function ld(){try{var s=localStorage.getItem('fc4');return s?JSON.parse(s):null}catch(e){return null}}
-function sv(){try{localStorage.setItem('fc4',JSON.stringify(D))}catch(e){}}
+function ld(){try{var s=localStorage.getItem('fc5');return s?JSON.parse(s):null}catch(e){return null}}
+function sv(){try{localStorage.setItem('fc5',JSON.stringify(D))}catch(e){}}
 function ip(y,m){return y<2026||(y===2026&&m<10)}
 function nid(){return D.ni++}
 function mk(y,m){return y+'-'+m}
-function fmt(v){var a=Math.abs(v);var s=a.toFixed(2).replace('.',',').replace(/\B(?=(\d{3})+(?!\d))/g,'.');return v<0?'-'+s:s}
+function fmt(v){var a=Math.abs(v);var s=a.toFixed(2).replace('.',',').replace(/\B(?=(\d{3})+(?!\d))/g,'.');return v<0?'-R$ '+s:'R$ '+s}
 
 function init(){
 D=ld();
@@ -182,9 +206,8 @@ var p=ip(y,m);var r={r:[],e:[]};
 D.rc.r.forEach(function(t){var v=t.v;if(t.n==='Salário'&&y===2026&&m<10)v=3873;r.r.push({id:nid(),n:t.n,v:v,d:t.d,rc:1,p:p?1:0})});
 D.rc.e.forEach(function(t){r.e.push({id:nid(),n:t.n,v:t.v,d:t.d,rc:1,p:p?1:0})});
 if(y<=2027)r.r.push({id:nid(),n:'Reembolso Sócio',v:3351,d:17,rc:0,p:p?1:0});
-var sv2=0;
-if(y===2026){sv2=m<7?4733:m<10?6268:6268;r.e.push({id:nid(),n:'Cartão Santander',v:sv2,d:27,rc:0,p:p?1:0})}
-else if(y===2027){sv2=m<=6?5500:m<=7?4000:3000;r.e.push({id:nid(),n:'Cartão Santander',v:sv2,d:27,rc:0,p:p?1:0})}
+if(y===2026){var sv2=m<7?4733:6268;r.e.push({id:nid(),n:'Cartão Santander',v:sv2,d:27,rc:0,p:p?1:0})}
+else if(y===2027){var sv2=m<=6?5500:m<=7?4000:3000;r.e.push({id:nid(),n:'Cartão Santander',v:sv2,d:27,rc:0,p:p?1:0})}
 if((y===2026&&m>=1&&m<=11))r.e.push({id:nid(),n:'Planejados',v:800,d:10,rc:0,p:p?1:0});
 if(y===2026&&m===12)r.e.push({id:nid(),n:'Planejados (última)',v:2900,d:10,rc:0,p:0});
 if((y===2026&&m>=10)||(y===2027&&m<=7))r.e.push({id:nid(),n:'Mercado Pago',v:336,d:16,rc:0,p:p?1:0});
@@ -260,7 +283,7 @@ var tot=bs.reduce(function(s,b){return s+b},0);
 var gn=bs.filter(function(b){return b>=0}).length;
 var rn=bs.filter(function(b){return b<0}).length;
 var tc=tot>=0?'color:#27ae60':'color:#e74c3c';
-document.getElementById('chRes').innerHTML='🟢 '+gn+' positivos · 🔴 '+rn+' negativos · Ano: <b style="'+tc+'">R$ '+fmt(tot)+'</b>';
+document.getElementById('chRes').innerHTML='🟢 '+gn+' positivos · 🔴 '+rn+' negativos · Ano: <b style="'+tc+'">'+fmt(tot)+'</b>';
 }
 
 function rSm(){
@@ -281,13 +304,13 @@ else if(pct>=85)al='<div class="summ-alert" style="background:#fff3e0;color:#e67
 else if(pct>=70)al='<div class="summ-alert" style="background:#fff8e1;color:#f39c12">🟡 Atenção: 70%+ comprometida</div>';
 else if(pct>=50)al='<div class="summ-alert" style="background:#e8f5e9;color:#27ae60">🟢 Metade da renda usada</div>';
 var h='<div class="summ-row">';
-h+='<div class="summ-card"><div class="lb">💵 Receita</div><div class="vl" style="color:#27ae60">R$ '+fmt(tr)+'</div></div>';
-h+='<div class="summ-card"><div class="lb">📋 Total Contas</div><div class="vl" style="color:#e74c3c">R$ '+fmt(te)+'</div></div>';
+h+='<div class="summ-card"><div class="lb">💵 Receita</div><div class="vl" style="color:#27ae60">'+fmt(tr)+'</div></div>';
+h+='<div class="summ-card"><div class="lb">📋 Total Contas</div><div class="vl" style="color:#e74c3c">'+fmt(te)+'</div></div>';
 h+='</div><div class="summ-row">';
-h+='<div class="summ-card"><div class="lb">✅ Pago</div><div class="vl">R$ '+fmt(tp)+'</div></div>';
-h+='<div class="summ-card"><div class="lb">⏳ Pendente</div><div class="vl">R$ '+fmt(tpn)+'</div></div>';
+h+='<div class="summ-card"><div class="lb">✅ Pago</div><div class="vl">'+fmt(tp)+'</div></div>';
+h+='<div class="summ-card"><div class="lb">⏳ Pendente</div><div class="vl">'+fmt(tpn)+'</div></div>';
 h+='</div>';
-h+='<div class="summ-rem" style="'+rb+';'+rc+'"><div class="lb" style="color:inherit">Sobra do Mês</div><div class="rv">R$ '+fmt(rm)+'</div>';
+h+='<div class="summ-rem" style="'+rb+';'+rc+'"><div class="lb" style="color:inherit">Sobra do Mês</div><div class="rv">'+fmt(rm)+'</div>';
 if(rt)h+='<div style="font-size:11px;margin-top:2px">'+rt+'</div>';
 h+='</div>'+al;
 document.getElementById('summ').innerHTML=h;
@@ -320,7 +343,7 @@ var h='<div class="'+cls+'">';
 h+='<div class="ichk'+(it.p?' on':'')+'" onclick="tP('+it.id+',\''+tp+'\')">✓</div>';
 h+='<div class="iinf"><div class="iname">'+it.n+'</div>';
 h+='<div class="idet">Dia '+it.d+(it.rc?' · 🔄 Recorrente':'')+'</div></div>';
-h+='<div class="'+vc+'">'+px+'R$ '+fmt(it.v)+'</div>';
+h+='<div class="'+vc+'">'+px+fmt(it.v)+'</div>';
 h+='<div class="iact"><button onclick="oE('+it.id+',\''+tp+'\')">✏️</button></div>';
 h+='</div>';return h;
 }
@@ -367,7 +390,7 @@ var nm=document.getElementById('mNm').value.trim();
 var vl=parseFloat(document.getElementById('mVl').value);
 var dy=parseInt(document.getElementById('mDy').value);
 var rc=document.getElementById('mRec').classList.contains('on')?1:0;
-if(!nm||isNaN(vl)||isNaN(dy)||dy<1||dy>31){alert('Preencha todos os campos corretamente');return}
+if(!nm||isNaN(vl)||isNaN(dy)||dy<1||dy>31){alert('Preencha todos os campos');return}
 var k=mk(D.vy,D.vm);if(!D.mo[k])D.mo[k]=gM(D.vy,D.vm);
 var mo=D.mo[k];var ar=mType==='r'?mo.r:mo.e;
 if(eId!==null){var it=ar.find(function(i){return i.id===eId});if(it){it.n=nm;it.v=vl;it.d=dy;it.rc=rc}}
@@ -416,13 +439,100 @@ for(var m=1;m<=12;m++)delete D.mo[mk(y,m)];
 if(D.vy===y){D.vy=D.yrs[0];D.vm=1}
 sv();closeY();closeC();render();
 };
-document.getElementById('cMsg').textContent='Excluir '+y+' e todos os dados desse ano?';
+document.getElementById('cMsg').textContent='Excluir '+y+' e todos os dados?';
 document.getElementById('cBg').classList.add('show');
 }
 }
 
 function closeC(){document.getElementById('cBg').classList.remove('show');cFn=null}
 function execC(){if(cFn)cFn()}
+
+function openPdf(){document.getElementById('pBg').classList.add('show')}
+function closePdf(){document.getElementById('pBg').classList.remove('show')}
+
+function genPdf(type){
+closePdf();
+var w=window.open('','_blank');
+if(!w){alert('Permita pop-ups para gerar o PDF');return}
+var css='body{font-family:-apple-system,Arial,sans-serif;padding:20px;color:#1a1a2e;max-width:600px;margin:0 auto}h1{text-align:center;font-size:20px;margin-bottom:5px}h2{font-size:16px;margin:15px 0 8px;padding-bottom:4px;border-bottom:2px solid #1a1a2e}h3{font-size:14px;margin:12px 0 6px}.sub{text-align:center;color:#888;font-size:12px;margin-bottom:15px}table{width:100%;border-collapse:collapse;margin-bottom:10px;font-size:13px}td{padding:5px 8px;border-bottom:1px solid #eee}td:last-child{text-align:right;font-weight:600}.green{color:#27ae60}.red{color:#e74c3c}.yellow{color:#f39c12}.box{padding:12px;border-radius:6px;text-align:center;margin:10px 0;font-weight:700;font-size:16px}.bg{background:#e8f5e9}.by{background:#fff8e1}.br{background:#fce4ec}.chb{display:flex;gap:2px;height:60px;margin:10px 0;align-items:flex-end}.chc{flex:1;text-align:center;font-size:8px}.chbar{width:80%;margin:0 auto;border-radius:2px;min-height:1px}.ft{text-align:center;font-size:10px;color:#aaa;margin-top:20px;border-top:1px solid #eee;padding-top:10px}';
+var html='<html><head><meta charset="UTF-8"><title>FinConsult</title><style>'+css+'</style></head><body>';
+html+='<h1>💰 FINCONSULT</h1>';
+var now=new Date();var ts=now.toLocaleDateString('pt-BR')+' às '+now.toLocaleTimeString('pt-BR',{hour:'2-digit',minute:'2-digit'});
+
+if(type==='month'){
+html+=monthHtml(D.vy,D.vm);
+}else{
+html+='<div class="sub">Resumo Anual — '+D.vy+'</div>';
+html+=chartHtml(D.vy);
+var ytR=0,ytE=0;
+for(var m=1;m<=12;m++){
+var k=mk(D.vy,m);var mo=D.mo[k];
+if(mo){var tr=0,te=0;mo.r.forEach(function(i){tr+=i.v});mo.e.forEach(function(i){te+=i.v});ytR+=tr;ytE+=te}
+}
+var ytB=ytR-ytE;var yc=ytB>=0?'bg':'br';
+html+='<div class="box '+yc+'"><span style="font-size:12px">Resultado do Ano</span><br>'+fmt(ytB)+'</div>';
+for(var m=1;m<=12;m++){html+='<div style="page-break-inside:avoid">'+monthHtml(D.vy,m)+'</div>'}
+}
+html+='<div class="ft">Gerado em '+ts+'</div>';
+html+='<script>setTimeout(function(){window.print()},500)<\/script>';
+html+='</body></html>';
+w.document.write(html);
+w.document.close();
+}
+
+function monthHtml(y,m){
+var k=mk(y,m);var mo=D.mo[k];
+var h='<h2>📅 '+MF[m-1]+'/'+y+'</h2>';
+if(!mo){h+='<p style="color:#aaa">Sem dados</p>';return h}
+var tr=0,te=0,tp=0,tpn=0;
+mo.r.forEach(function(i){tr+=i.v});
+mo.e.forEach(function(i){te+=i.v;if(i.p)tp+=i.v;else tpn+=i.v});
+var rm=tr-te;
+var bc=rm>500?'bg':(rm>=0?'by':'br');
+var tc=rm>500?'green':(rm>=0?'yellow':'red');
+h+='<table><td>💵 Receita</td><td class="green">'+fmt(tr)+'</td></table>';
+h+='<table><td>📋 Total Contas</td><td class="red">'+fmt(te)+'</td></table>';
+h+='<table><td>✅ Pago</td><td>'+fmt(tp)+'</td></table>';
+h+='<table><td>⏳ Pendente</td><td>'+fmt(tpn)+'</td></table>';
+h+='<div class="box '+bc+'"><span style="font-size:11px">Sobra</span><br><span class="'+tc+'">'+fmt(rm)+'</span></div>';
+h+='<h3>💵 Receitas</h3><table>';
+mo.r.sort(function(a,b){return a.d-b.d}).forEach(function(i){
+h+='<tr><td>'+(i.p?'✅':'⬜')+' '+i.n+' <span style="color:#aaa;font-size:10px">(dia '+i.d+')</span></td><td class="green">+'+fmt(i.v)+'</td></tr>';
+});
+h+='</table>';
+h+='<h3>📋 Contas</h3><table>';
+mo.e.sort(function(a,b){return a.d-b.d}).forEach(function(i){
+h+='<tr><td>'+(i.p?'✅':'⬜')+' '+i.n+' <span style="color:#aaa;font-size:10px">(dia '+i.d+')</span></td><td class="red">-'+fmt(i.v)+'</td></tr>';
+});
+h+='</table>';
+return h;
+}
+
+function chartHtml(y){
+var bs=[],mx=1;
+for(var m=1;m<=12;m++){var k=mk(y,m);var mo=D.mo[k];var b=0;if(mo){var tr=0,te=0;mo.r.forEach(function(i){tr+=i.v});mo.e.forEach(function(i){te+=i.v});b=tr-te}bs.push(b);if(Math.abs(b)>mx)mx=Math.abs(b)}
+var h='<h3 style="text-align:center">📈 Gráfico '+y+'</h3>';
+h+='<div style="display:flex;gap:2px;height:80px;align-items:center">';
+for(var m=1;m<=12;m++){
+var b=bs[m-1];var ht=Math.abs(b)/mx*35;if(ht<2&&b!==0)ht=2;
+var cl=b>=0?'background:#27ae60':'background:#e74c3c';
+h+='<div style="flex:1;display:flex;flex-direction:column;align-items:center;height:100%;justify-content:center">';
+h+='<div style="height:35px;width:100%;display:flex;flex-direction:column;justify-content:flex-end;align-items:center">';
+if(b>=0)h+='<div style="width:70%;border-radius:2px;'+cl+';height:'+ht+'px"></div>';
+h+='</div>';
+h+='<div style="height:1px;width:100%;background:#999"></div>';
+h+='<div style="height:35px;width:100%;display:flex;flex-direction:column;justify-content:flex-start;align-items:center">';
+if(b<0)h+='<div style="width:70%;border-radius:2px;'+cl+';height:'+ht+'px"></div>';
+h+='</div>';
+h+='<div style="font-size:8px;color:#888">'+MC[m-1]+'</div>';
+h+='</div>';
+}
+h+='</div>';
+var gn=bs.filter(function(b){return b>=0}).length;
+var rn=bs.filter(function(b){return b<0}).length;
+h+='<p style="text-align:center;font-size:11px;margin-top:5px">🟢 '+gn+' positivos · 🔴 '+rn+' negativos</p>';
+return h;
+}
 
 init();
 </script>
