@@ -2,115 +2,111 @@
 <html lang="pt-BR">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
 <meta name="apple-mobile-web-app-capable" content="yes">
 <meta name="apple-mobile-web-app-status-bar-style" content="default">
 <title>FinConsult</title>
 <style>
 *{margin:0;padding:0;box-sizing:border-box}
-body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,sans-serif;background:#fff;color:#1a1a2e;max-width:500px;margin:0 auto;padding-bottom:30px;font-size:15px}
+body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,sans-serif;background:#fff;color:#1a1a2e;max-width:500px;margin:0 auto;padding-bottom:30px}
 .header{background:#1a1a2e;color:#fff;padding:12px;text-align:center;position:sticky;top:0;z-index:100}
-.header h1{font-size:16px;margin-bottom:6px}
+.header h1{font-size:16px;margin-bottom:4px}
 .month-nav{display:flex;align-items:center;justify-content:center;gap:12px}
 .month-nav button{background:none;border:none;color:#fff;font-size:22px;cursor:pointer;padding:4px 8px}
 .month-nav span{font-size:15px;font-weight:600;min-width:140px}
-.year-tabs{display:flex;align-items:center;justify-content:center;gap:6px;margin-top:6px;flex-wrap:wrap}
-.year-tabs button{background:rgba(255,255,255,0.15);border:none;color:#fff;font-size:12px;cursor:pointer;padding:3px 10px;border-radius:10px}
-.year-tabs button.active{background:rgba(255,255,255,0.5);font-weight:700}
-.year-tabs .yr-add{background:rgba(255,255,255,0.3);font-weight:700}
-.year-tabs .yr-del{background:rgba(255,100,100,0.4);font-size:10px}
-.chart-box{padding:12px;background:#f8f9fa;border-bottom:1px solid #eee}
-.chart-title{font-size:13px;font-weight:600;margin-bottom:6px;text-align:center}
-.chart{display:flex;align-items:center;justify-content:space-between;height:110px;position:relative}
-.chart-mid{position:absolute;left:0;right:0;top:50%;border-top:1px dashed #aaa}
-.bar-wrap{display:flex;flex-direction:column;align-items:center;flex:1;height:100%;position:relative;justify-content:center}
-.bar-pos,.bar-neg{width:60%;min-width:8px;border-radius:3px 3px 0 0;transition:height 0.3s}
-.bar-pos{background:#27ae60;align-self:flex-end}
-.bar-neg{background:#e74c3c;border-radius:0 0 3px 3px;align-self:flex-start}
-.bar-lbl{font-size:9px;color:#666;margin-top:2px;position:absolute;bottom:-14px}
-.bar-evt{font-size:7px;position:absolute;top:-2px;white-space:nowrap;color:#555}
-.bar-cur{outline:2px solid #f39c12;border-radius:3px}
-.bar-future{opacity:0.5}
-.chart-legend{display:flex;justify-content:center;gap:15px;margin-top:18px;font-size:11px}
-.chart-result{text-align:center;margin-top:6px;font-size:13px;font-weight:600}
-.starting-bal{background:#f0f8ff;border:1px solid #d0e8ff;border-radius:8px;margin:10px 12px;padding:10px;font-size:13px;display:flex;justify-content:space-between;align-items:center}
-.starting-bal .sb-label{color:#666}
-.starting-bal .sb-value{font-weight:700;color:#1a1a2e}
-.summary{padding:12px;border-bottom:1px solid #eee}
-.summary-grid{display:grid;grid-template-columns:1fr 1fr;gap:6px}
+.year-nav{display:flex;align-items:center;justify-content:center;gap:8px;margin-top:4px;flex-wrap:wrap}
+.year-nav button{background:rgba(255,255,255,0.2);border:none;color:#fff;font-size:11px;cursor:pointer;padding:3px 10px;border-radius:10px}
+.year-nav .active{background:rgba(255,255,255,0.5);font-weight:700}
+.year-nav .add-year,.year-nav .del-year{font-size:14px;padding:2px 8px}
+.chart-section{padding:10px 12px;background:#f8f9fa;border-bottom:1px solid #eee}
+.chart-title{font-size:13px;font-weight:600;margin-bottom:8px;text-align:center}
+.chart-row{display:flex;align-items:center;margin-bottom:4px;font-size:12px}
+.chart-month{width:32px;font-weight:600;flex-shrink:0}
+.chart-icon{width:18px;flex-shrink:0;font-size:10px}
+.chart-bar-container{flex:1;height:18px;background:#eee;border-radius:4px;overflow:hidden;position:relative}
+.chart-bar{height:100%;border-radius:4px;min-width:2px;transition:width 0.3s}
+.chart-bar.positive{background:#27ae60}
+.chart-bar.negative{background:#e74c3c}
+.chart-bar.future{opacity:0.5}
+.chart-bar.current{border:2px solid #f39c12}
+.chart-value{width:75px;text-align:right;font-size:11px;font-weight:600;flex-shrink:0;padding-left:4px}
+.chart-event{font-size:9px;margin-left:4px;flex-shrink:0;max-width:70px;overflow:hidden;white-space:nowrap}
+.chart-summary{display:flex;justify-content:center;gap:15px;margin-top:6px;font-size:11px;font-weight:600}
+.summary{padding:12px}
+.summary-grid{display:grid;grid-template-columns:1fr 1fr;gap:6px;margin-bottom:8px}
 .summary-item{padding:8px;border-radius:8px;background:#f8f9fa}
-.summary-item .s-label{font-size:11px;color:#666}
-.summary-item .s-value{font-size:20px;font-weight:700}
-.summary-remain{grid-column:1/-1;text-align:center;padding:10px;border-radius:8px;margin-top:4px}
-.alert-bar{padding:6px 12px;font-size:12px;font-weight:600;text-align:center;display:none}
-.section{padding:12px}
-.section-title{font-size:14px;font-weight:600;margin-bottom:8px;display:flex;align-items:center;gap:6px}
-.item{display:flex;align-items:center;padding:10px;border-radius:8px;background:#f8f9fa;margin-bottom:5px;position:relative}
-.item.paid-item{opacity:0.5}
-.item.paid-item .item-name{text-decoration:line-through}
+.summary-item .label{font-size:11px;color:#666}
+.summary-item .value{font-size:16px;font-weight:700}
+.summary-item .value.green{color:#27ae60}
+.summary-item .value.red{color:#e74c3c}
+.summary-remaining{text-align:center;padding:12px;border-radius:10px;margin-top:4px}
+.summary-remaining .label{font-size:12px;font-weight:600}
+.summary-remaining .value{font-size:22px;font-weight:800}
+.summary-remaining.positive{background:#e8f5e9}
+.summary-remaining .value.green{color:#27ae60}
+.summary-remaining.negative{background:#fce4ec}
+.summary-remaining .value.red{color:#e74c3c}
+.summary-remaining.warning{background:#fff8e1}
+.summary-remaining .value.yellow{color:#f39c12}
+.alert-bar{text-align:center;padding:4px;font-size:11px;font-weight:600;border-radius:6px;margin-top:6px}
+.alert-bar.green{background:#e8f5e9;color:#27ae60}
+.alert-bar.yellow{background:#fff8e1;color:#f39c12}
+.alert-bar.orange{background:#fff3e0;color:#e67e22}
+.alert-bar.red{background:#fce4ec;color:#e74c3c}
+.alert-bar.critical{background:#b71c1c;color:#fff}
+.add-buttons{display:flex;gap:8px;padding:8px 12px}
+.add-btn{flex:1;padding:10px;border:2px dashed #ccc;border-radius:8px;background:none;font-size:14px;cursor:pointer;color:#555;font-weight:600}
+.add-btn:active{background:#f0f0f0}
+.section{padding:8px 12px}
+.section-title{font-size:14px;font-weight:600;margin-bottom:6px;display:flex;align-items:center;gap:6px}
+.section-title.clickable{cursor:pointer}
+.item{display:flex;align-items:center;padding:10px;border-radius:8px;background:#f8f9fa;margin-bottom:5px}
+.item.paid{opacity:0.5}
+.item.paid .item-name{text-decoration:line-through}
 .item-check{width:22px;height:22px;border:2px solid #ccc;border-radius:50%;margin-right:8px;cursor:pointer;display:flex;align-items:center;justify-content:center;flex-shrink:0;font-size:12px}
 .item-check.checked{background:#27ae60;border-color:#27ae60;color:#fff}
 .item-info{flex:1;min-width:0}
 .item-name{font-size:14px;font-weight:500;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
 .item-detail{font-size:11px;color:#888}
-.item-value{font-size:14px;font-weight:700;margin-left:6px;white-space:nowrap}
-.income-val{color:#27ae60}
-.expense-val{color:#e74c3c}
-.item-actions{display:flex;gap:2px;margin-left:4px}
+.item-value{font-size:14px;font-weight:700;flex-shrink:0;margin-left:6px}
+.item-value.income{color:#27ae60}
+.item-value.expense{color:#e74c3c}
+.item-actions{display:flex;gap:2px;margin-left:4px;flex-shrink:0}
 .item-actions button{background:none;border:none;font-size:14px;cursor:pointer;padding:3px}
-.add-btns{display:flex;gap:8px;padding:12px}
-.add-btn{flex:1;padding:10px;border:2px dashed #ddd;border-radius:8px;background:none;font-size:14px;cursor:pointer;color:#666}
-.add-btn:active{background:#f0f0f0}
-.toolbar{display:flex;gap:6px;padding:0 12px 8px;flex-wrap:wrap}
-.tool-btn{padding:6px 10px;border:1px solid #ddd;border-radius:6px;background:#fff;font-size:12px;cursor:pointer;color:#555}
-.tool-btn:active{background:#f0f0f0}
-.cat-summary{padding:0 12px 12px}
-.cat-toggle{padding:8px 12px;background:#f8f9fa;border-radius:8px;font-size:13px;cursor:pointer;display:flex;justify-content:space-between;align-items:center;margin:0 12px 8px}
-.cat-list{padding:0 12px 12px;display:none}
-.cat-list.open{display:block}
-.cat-item{display:flex;justify-content:space-between;padding:6px 8px;font-size:13px;border-bottom:1px solid #f0f0f0}
-.cat-item:last-child{border:none}
-.cat-pct{color:#888;font-size:11px}
-.separator{text-align:center;font-size:12px;color:#999;margin:10px 0 6px;padding:4px;border-top:1px solid #eee}
-.modal-bg{display:none;position:fixed;top:0;left:0;right:0;bottom:0;background:rgba(0,0,0,0.5);z-index:200;justify-content:center;align-items:center}
-.modal-bg.active{display:flex}
-.modal{background:#fff;border-radius:12px;padding:18px;width:90%;max-width:400px;max-height:85vh;overflow-y:auto}
+.separator{text-align:center;font-size:11px;color:#999;margin:10px 0 6px;padding:4px;border-top:1px solid #eee}
+.cat-section{padding:8px 12px}
+.cat-row{display:flex;align-items:center;font-size:12px;padding:5px 0;border-bottom:1px solid #f0f0f0}
+.cat-icon{width:22px}
+.cat-name{flex:1;font-weight:500}
+.cat-real{width:70px;text-align:right;font-weight:600}
+.cat-sug{width:70px;text-align:right;color:#888}
+.cat-status{width:28px;text-align:center}
+.cat-header{font-weight:700;font-size:11px;color:#888;border-bottom:2px solid #ddd;padding-bottom:4px;margin-bottom:2px}
+.bottom-buttons{display:flex;gap:6px;padding:8px 12px;justify-content:center;flex-wrap:wrap}
+.bottom-btn{padding:8px 14px;border:1px solid #ddd;border-radius:8px;background:#f8f9fa;font-size:12px;cursor:pointer;color:#555;font-weight:500}
+.bottom-btn:active{background:#e0e0e0}
+.pdf-buttons{display:flex;gap:8px;padding:8px 12px;justify-content:center}
+.pdf-btn{padding:8px 14px;border:none;border-radius:8px;background:#1a1a2e;color:#fff;font-size:12px;cursor:pointer;font-weight:600}
+.pdf-btn:active{opacity:0.8}
+.modal-overlay{display:none;position:fixed;top:0;left:0;right:0;bottom:0;background:rgba(0,0,0,0.5);z-index:200;justify-content:center;align-items:center}
+.modal-overlay.active{display:flex}
+.modal{background:#fff;border-radius:12px;padding:16px;width:90%;max-width:400px;max-height:80vh;overflow-y:auto}
 .modal h3{margin-bottom:12px;font-size:16px}
 .modal label{display:block;margin-bottom:4px;font-size:12px;color:#666;font-weight:600}
 .modal input,.modal select{width:100%;padding:9px;border:1px solid #ddd;border-radius:8px;font-size:15px;margin-bottom:10px;-webkit-appearance:none}
-.modal-btns{display:flex;gap:8px;margin-top:8px}
-.modal-btns button{flex:1;padding:10px;border:none;border-radius:8px;font-size:14px;font-weight:600;cursor:pointer}
+.modal-row{display:flex;gap:8px}
+.modal-row>div{flex:1}
+.modal-buttons{display:flex;gap:8px;margin-top:8px}
+.modal-buttons button{flex:1;padding:10px;border:none;border-radius:8px;font-size:14px;font-weight:600;cursor:pointer}
 .btn-save{background:#1a1a2e;color:#fff}
 .btn-cancel{background:#f0f0f0;color:#333}
 .btn-delete{background:#e74c3c;color:#fff}
-.toggle-row{display:flex;align-items:center;gap:8px;margin-bottom:10px}
-.toggle{width:44px;height:24px;background:#ddd;border-radius:12px;position:relative;cursor:pointer;transition:background 0.3s;flex-shrink:0}
-.toggle.on{background:#27ae60}
+.toggle-container{display:flex;align-items:center;gap:8px;margin-bottom:10px}
+.toggle{width:44px;height:24px;background:#ddd;border-radius:12px;position:relative;cursor:pointer;transition:background 0.3s}
+.toggle.active{background:#27ae60}
 .toggle::after{content:'';position:absolute;width:20px;height:20px;background:#fff;border-radius:50%;top:2px;left:2px;transition:left 0.3s}
-.toggle.on::after{left:22px}
+.toggle.active::after{left:22px}
 .toggle-label{font-size:13px;color:#555}
-.installment-row{display:none;gap:8px;margin-bottom:10px}
-.installment-row.show{display:flex}
-.installment-row input{width:50%;margin-bottom:0}
-.installment-row label{margin-bottom:0;align-self:center}
-.sug-box{background:#f0fff0;border:1px solid #c8e6c9;border-radius:10px;padding:15px;margin:10px 12px}
-.sug-box h4{font-size:14px;margin-bottom:10px;text-align:center}
-.sug-input{display:flex;gap:8px;margin-bottom:12px;align-items:center}
-.sug-input label{font-size:13px;white-space:nowrap}
-.sug-input input{flex:1;padding:8px;border:1px solid #ddd;border-radius:6px;font-size:15px}
-.sug-result{font-size:13px}
-.sug-item{display:flex;justify-content:space-between;padding:4px 0;border-bottom:1px solid #e8e8e8}
-.sug-item:last-child{border:none}
-.sug-note{font-size:11px;color:#888;margin-top:8px;text-align:center}
-.sug-close{display:block;margin:10px auto 0;padding:8px 20px;background:#1a1a2e;color:#fff;border:none;border-radius:6px;font-size:13px;cursor:pointer}
-.welcome{background:#e8f5e9;border:1px solid #a5d6a7;border-radius:10px;padding:15px;margin:10px 12px;font-size:13px}
-.welcome h4{margin-bottom:8px}
-.welcome ul{padding-left:20px;margin-bottom:8px}
-.welcome button{display:block;margin:8px auto 0;padding:8px 20px;background:#27ae60;color:#fff;border:none;border-radius:6px;cursor:pointer}
-.pdf-btns{display:flex;gap:8px;padding:0 12px 12px}
-.pdf-btn{flex:1;padding:8px;border:1px solid #1a1a2e;border-radius:6px;background:#fff;font-size:12px;cursor:pointer;color:#1a1a2e;text-align:center}
-.pdf-btn:active{background:#1a1a2e;color:#fff}
-.remove-month-btn{font-size:11px;color:#e74c3c;cursor:pointer;padding:2px 8px;border:1px solid #e74c3c;border-radius:4px;background:none;margin-left:8px}
 </style>
 </head>
 <body>
@@ -119,944 +115,713 @@ body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,sans-serif;b
 <h1>💰 FinConsult</h1>
 <div class="month-nav">
 <button onclick="changeMonth(-1)">◀</button>
-<span id="monthLabel">Outubro/2026</span>
+<span id="monthLabel"></span>
 <button onclick="changeMonth(1)">▶</button>
 </div>
-<div class="year-tabs" id="yearTabs"></div>
+<div class="year-nav" id="yearNav"></div>
 </div>
 
-<div class="chart-box">
+<div class="chart-section">
 <div class="chart-title" id="chartTitle">📈 Projeção 2026</div>
-<div class="chart" id="chart"></div>
-<div class="chart-legend">
-<span>🟢 Positivo</span><span>🔴 Negativo</span><span>🟡 Atual</span>
-</div>
-<div class="chart-result" id="chartResult"></div>
+<div id="chartContainer"></div>
+<div class="chart-summary" id="chartSummary"></div>
 </div>
 
-<div class="starting-bal" id="startingBal" style="display:none">
-<span class="sb-label">💰 Saldo Inicial:</span>
-<span class="sb-value" id="sbValue">R$ 0</span>
-</div>
+<div class="summary" id="summarySection"></div>
 
-<div class="alert-bar" id="alertBar"></div>
-
-<div class="summary">
-<div class="summary-grid">
-<div class="summary-item"><div class="s-label">💵 Receita</div><div class="s-value" id="sumRec">R$ 0</div></div>
-<div class="summary-item"><div class="s-label">💸 Total Contas</div><div class="s-value" id="sumTotal">R$ 0</div></div>
-<div class="summary-item"><div class="s-label">✅ Pago</div><div class="s-value" id="sumPaid">R$ 0</div></div>
-<div class="summary-item"><div class="s-label">⏳ Pendente</div><div class="s-value" id="sumPend">R$ 0</div></div>
-<div class="summary-remain" id="sumRemain"><div class="s-label">📊 Sobra</div><div class="s-value" id="sumRemVal">R$ 0</div></div>
-</div>
-</div>
-
-<div class="toolbar">
-<button class="tool-btn" onclick="toggleSuggestion()">💡 Sugestão</button>
-<button class="tool-btn" onclick="openStartingBal()">⚙️ Saldo Inicial</button>
-<button class="tool-btn" onclick="removeCurrentMonth()">🗑️ Remover Mês</button>
-</div>
-
-<div class="pdf-btns">
-<button class="pdf-btn" onclick="generatePDF('month')">📄 PDF do Mês</button>
-<button class="pdf-btn" onclick="generatePDF('year')">📊 PDF do Ano</button>
-</div>
-
-<div id="suggestionBox" style="display:none"></div>
-
-<div class="cat-toggle" onclick="toggleCatSummary()">
-<span>📊 Por Categoria</span><span id="catArrow">▼</span>
-</div>
-<div class="cat-list" id="catList"></div>
-
-<div class="section">
-<div class="section-title">💵 Receitas</div>
-<div id="recList"></div>
-</div>
-
-<div class="add-btns">
+<div class="add-buttons">
 <button class="add-btn" onclick="openModal('revenue')">+ Receita</button>
 <button class="add-btn" onclick="openModal('expense')">+ Conta</button>
 </div>
 
-<div class="section">
-<div class="section-title">📋 Contas Pendentes</div>
-<div id="pendList"></div>
+<div class="cat-section" id="catSection"></div>
+
+<div class="section" id="revenueSection"></div>
+<div class="section" id="pendingSection"></div>
+<div class="section" id="paidSection"></div>
+
+<div class="bottom-buttons">
+<button class="bottom-btn" onclick="openSuggestion()">💡 Sugestão</button>
+<button class="bottom-btn" onclick="openStartingBalance()">⚙️ Saldo Inicial</button>
+<button class="bottom-btn" onclick="removeCurrentMonth()">🗑️ Remover Mês</button>
 </div>
 
-<div class="separator" id="paidSep" style="display:none">✅ Pagas do Mês</div>
-<div class="section" style="padding-top:0">
-<div id="paidList"></div>
+<div class="pdf-buttons">
+<button class="pdf-btn" onclick="generatePDF('month')">📄 PDF do Mês</button>
+<button class="pdf-btn" onclick="generatePDF('year')">📄 PDF do Ano</button>
 </div>
 
-<div class="modal-bg" id="modalBg">
-<div class="modal" id="modal">
-<h3 id="modalTitle">Nova Conta</h3>
-<label>Nome</label>
-<input type="text" id="mName" placeholder="Ex: Energia">
-<label>Valor (R$)</label>
-<input type="number" id="mValue" placeholder="0.00" step="0.01">
-<label>Dia do vencimento</label>
-<input type="number" id="mDay" placeholder="1-31" min="1" max="31">
-<div id="catField">
-<label>Categoria</label>
-<select id="mCat">
-<option value="🏠 Moradia">🏠 Moradia</option>
-<option value="🍔 Alimentação">🍔 Alimentação</option>
-<option value="🚗 Transporte">🚗 Transporte</option>
-<option value="🎓 Educação">🎓 Educação</option>
-<option value="💊 Saúde">💊 Saúde</option>
-<option value="💳 Dívidas">💳 Dívidas</option>
-<option value="🎮 Lazer">🎮 Lazer</option>
-<option value="👔 Pessoal">👔 Pessoal</option>
-<option value="📈 Investimento">📈 Investimento</option>
-<option value="🛡️ Reserva">🛡️ Reserva</option>
-<option value="📦 Outros">📦 Outros</option>
-</select>
-</div>
-<div class="toggle-row">
-<div class="toggle" id="mRecurring" onclick="this.classList.toggle('on')"></div>
-<span class="toggle-label">🔄 Recorrente (repete todo mês)</span>
-</div>
-<div class="toggle-row">
-<div class="toggle" id="mInstToggle" onclick="toggleInstallment()"></div>
-<span class="toggle-label">📊 Parcelado</span>
-</div>
-<div class="installment-row" id="instRow">
-<div style="flex:1"><label>Parcela atual</label><input type="number" id="mInstCur" placeholder="1" min="1"></div>
-<div style="flex:1"><label>Total parcelas</label><input type="number" id="mInstTotal" placeholder="10" min="1"></div>
-</div>
-<div class="modal-btns">
-<button class="btn-cancel" onclick="closeModal()">Cancelar</button>
-<button class="btn-delete" id="btnDel" onclick="deleteItem()" style="display:none">🗑️</button>
-<button class="btn-save" onclick="saveItem()">Salvar</button>
-</div>
-</div>
-</div>
-
-<div class="modal-bg" id="modalSB">
-<div class="modal">
-<h3>⚙️ Ponto de Partida</h3>
-<label>💰 Saldo em conta</label>
-<input type="number" id="sbConta" placeholder="0.00" step="0.01">
-<label>🛡️ Reserva de emergência</label>
-<input type="number" id="sbReserva" placeholder="0.00" step="0.01">
-<label>📈 Investimentos</label>
-<input type="number" id="sbInvest" placeholder="0.00" step="0.01">
-<div class="modal-btns">
-<button class="btn-cancel" onclick="closeSB()">Cancelar</button>
-<button class="btn-save" onclick="saveSB()">Salvar</button>
-</div>
-</div>
-</div>
-
-<div class="modal-bg" id="modalYear">
-<div class="modal">
-<h3 id="yearModalTitle">Adicionar Ano</h3>
-<label>Ano</label>
-<input type="number" id="yrInput" placeholder="2029" min="2020" max="2040">
-<div class="modal-btns">
-<button class="btn-cancel" onclick="closeYearModal()">Cancelar</button>
-<button class="btn-save" onclick="saveYear()">Confirmar</button>
-</div>
-</div>
+<div class="modal-overlay" id="modalOverlay">
+<div class="modal" id="modalContent"></div>
 </div>
 
 <script>
 var MONTHS=['Janeiro','Fevereiro','Março','Abril','Maio','Junho','Julho','Agosto','Setembro','Outubro','Novembro','Dezembro'];
-var CATS=['🏠 Moradia','🍔 Alimentação','🚗 Transporte','🎓 Educação','💊 Saúde','💳 Dívidas','🎮 Lazer','👔 Pessoal','📈 Investimento','🛡️ Reserva','📦 Outros'];
+var CATEGORIES=['🏠 Moradia','🍔 Alimentação','🚗 Transporte','🎓 Educação','💊 Saúde','💳 Dívidas','🎮 Lazer','👔 Pessoal','📈 Investimento','🛡️ Reserva','❓ Outros'];
+var CAT_PERCENTS={'🏠 Moradia':30,'🍔 Alimentação':15,'🚗 Transporte':10,'🎓 Educação':5,'💊 Saúde':5,'💳 Dívidas':0,'🎮 Lazer':10,'👔 Pessoal':5,'📈 Investimento':10,'🛡️ Reserva':10,'❓ Outros':0};
+var EVENTS={'2026-05':'🎯 PLR','2026-08':'💰 13º','2026-10':'📍 HOJE','2026-11':'🏖️ Férias','2026-12':'🎄 13º+Balão','2027-01':'🏆 Plan.fim','2027-05':'🎯 PLR+Balão','2027-06':'🏆 Carro fim','2027-07':'🏆 MP zera'};
+var currentMonth, currentYear, data;
 
-var EVENTS={
-'2026-05':'🎯PLR',
-'2026-08':'💰13º',
-'2026-10':'📍Atual',
-'2026-11':'🏖️Férias',
-'2026-12':'🎄13º+Balão',
-'2027-01':'🏆Plan.fim',
-'2027-05':'🎯PLR+Balão',
-'2027-06':'🏆Carro fim',
-'2027-07':'🏆MP zera'
-};
-
-var curYear=2026,curMonth=9; // 0-indexed, 9=October
-var data=null;
-var editingItem=null;
-var editingType=null;
-
-function getKey(y,m){return y+'-'+String(m+1).padStart(2,'0')}
-
-function loadData(){
-var saved=localStorage.getItem('finconsult_v4');
-if(saved){try{data=JSON.parse(saved)}catch(e){data=null}}
-if(!data){data={years:[2026,2027,2028],startingBal:{conta:0,reserva:0,invest:0},months:{},removed:[]};initDefaultData();saveData()}
-}
-
-function saveData(){localStorage.setItem('finconsult_v4',JSON.stringify(data))}
-
-function initDefaultData(){
-var recRev=[
-{name:'Adiantamento',value:6044.60,day:15,recurring:true,paid:false},
-{name:'Salário',value:2213,day:30,recurring:true,paid:false},
-{name:'Empreendimento',value:2500,day:25,recurring:true,paid:false},
-{name:'Empreend. Semanal',value:600,day:1,recurring:true,paid:false}
-];
-var recRevFull=[
-{name:'Adiantamento',value:6044.60,day:15,recurring:true,paid:true},
-{name:'Salário',value:3800,day:30,recurring:true,paid:true},
-{name:'Empreendimento',value:2500,day:25,recurring:true,paid:true},
-{name:'Empreend. Semanal',value:600,day:1,recurring:true,paid:true}
-];
-var recExp=[
-{name:'Financiamento Apto',value:3600,day:15,cat:'🏠 Moradia',recurring:true,paid:false},
-{name:'Condomínio',value:1000,day:10,cat:'🏠 Moradia',recurring:true,paid:false},
-{name:'Energia',value:300,day:8,cat:'🏠 Moradia',recurring:true,paid:false},
-{name:'Água',value:190,day:5,cat:'🏠 Moradia',recurring:true,paid:false},
-{name:'Internet',value:150,day:10,cat:'🏠 Moradia',recurring:true,paid:false},
-{name:'Terapia',value:800,day:20,cat:'💊 Saúde',recurring:true,paid:false},
-{name:'Faculdade Julia',value:700,day:8,cat:'🎓 Educação',recurring:true,paid:false},
-{name:'Perua Escolar',value:280,day:5,cat:'🎓 Educação',recurring:true,paid:false},
-{name:'Cartão Mercado',value:790,day:2,cat:'🍔 Alimentação',recurring:true,paid:false},
-{name:'Combustível',value:500,day:20,cat:'🚗 Transporte',recurring:true,paid:false}
-];
-// Jan-Sep 2026 (past, all paid)
-for(var m=0;m<9;m++){
-var key=getKey(2026,m);
-var revs=JSON.parse(JSON.stringify(recRevFull));
-var exps=JSON.parse(JSON.stringify(recExp));
-exps.forEach(function(e){e.paid=true});
-// Add Santander
-exps.push({name:'Cartão Santander',value:4500,day:17,cat:'💳 Dívidas',recurring:false,paid:true});
-exps.push({name:'Planejados',value:800,day:10,cat:'🏠 Moradia',recurring:false,paid:true});
-exps.push({name:'Passeios FDS',value:700,day:15,cat:'🎮 Lazer',recurring:false,paid:true});
-// Special months
-if(m===4){revs.push({name:'PLR',value:25000,day:5,recurring:false,paid:true})}
-if(m===7){revs.push({name:'13º (1ª parte)',value:7000,day:20,recurring:false,paid:true})}
-data.months[key]={revenues:revs,expenses:exps};
-}
-// October 2026 (current)
-var octKey=getKey(2026,9);
-data.months[octKey]={
-revenues:[
-{name:'Adiantamento',value:6044.60,day:15,recurring:true,paid:true},
-{name:'Empreend. Semanal',value:600,day:1,recurring:true,paid:true},
-{name:'Sócio Reembolso',value:3351,day:17,recurring:false,paid:true},
-{name:'Empreendimento',value:2500,day:25,recurring:true,paid:false},
-{name:'Férias',value:7500,day:29,recurring:false,paid:false},
-{name:'Salário',value:2213,day:30,recurring:true,paid:false}
-],
-expenses:[
-{name:'Cartão Santander',value:9619,day:17,cat:'💳 Dívidas',recurring:false,paid:true},
-{name:'Cartão Mercado',value:1700,day:2,cat:'🍔 Alimentação',recurring:false,paid:true},
-{name:'Financiamento Apto',value:3600,day:15,cat:'🏠 Moradia',recurring:true,paid:true},
-{name:'Mercado Pago',value:336,day:16,cat:'💳 Dívidas',inst:'2/10',instCur:2,instTotal:10,paid:true},
-{name:'Faculdade Julia',value:700,day:8,cat:'🎓 Educação',recurring:true,paid:true},
-{name:'Perua Escolar',value:280,day:5,cat:'🎓 Educação',recurring:true,paid:true},
-{name:'Água',value:190,day:5,cat:'🏠 Moradia',recurring:true,paid:true},
-{name:'Energia',value:153,day:8,cat:'🏠 Moradia',recurring:true,paid:true},
-{name:'Terapia',value:800,day:20,cat:'💊 Saúde',recurring:true,paid:false},
-{name:'Combustível',value:300,day:20,cat:'🚗 Transporte',recurring:false,paid:false},
-{name:'Pneus + Alinhamento',value:1600,day:30,cat:'🚗 Transporte',recurring:false,paid:false}
-]
-};
-// November 2026
-var novKey=getKey(2026,10);
-data.months[novKey]={
-revenues:[
-{name:'Férias (pagamento)',value:7500,day:1,recurring:false,paid:false},
-{name:'Adiantamento (reduzido)',value:3000,day:15,recurring:false,paid:false},
-{name:'Empreend. Semanal',value:600,day:1,recurring:true,paid:false},
-{name:'Empreendimento',value:2500,day:25,recurring:true,paid:false},
-{name:'Salário (reduzido)',value:1100,day:30,recurring:false,paid:false}
-],
-expenses:[
-{name:'Cartão Mercado',value:800,day:2,cat:'🍔 Alimentação',recurring:true,paid:false},
-{name:'Financiamento Apto',value:3600,day:15,cat:'🏠 Moradia',recurring:true,paid:false},
-{name:'Mercado Pago',value:336,day:16,cat:'💳 Dívidas',inst:'3/10',instCur:3,instTotal:10,paid:false},
-{name:'Cartão Santander',value:7300,day:27,cat:'💳 Dívidas',recurring:false,paid:false},
-{name:'Terapia',value:800,day:20,cat:'💊 Saúde',recurring:true,paid:false},
-{name:'Faculdade Julia',value:700,day:8,cat:'🎓 Educação',recurring:true,paid:false},
-{name:'Perua Escolar',value:280,day:5,cat:'🎓 Educação',recurring:true,paid:false},
-{name:'Água',value:190,day:5,cat:'🏠 Moradia',recurring:true,paid:false},
-{name:'Energia',value:300,day:8,cat:'🏠 Moradia',recurring:true,paid:false},
-{name:'Combustível',value:500,day:20,cat:'🚗 Transporte',recurring:true,paid:false},
-{name:'Férias (lazer)',value:1000,day:10,cat:'🎮 Lazer',recurring:false,paid:false}
-]
-};
-// December 2026
-var decKey=getKey(2026,11);
-data.months[decKey]={
-revenues:[
-{name:'Adiantamento',value:6044.60,day:15,recurring:true,paid:false},
-{name:'Salário',value:2213,day:30,recurring:true,paid:false},
-{name:'13º Salário',value:13955,day:20,recurring:false,paid:false},
-{name:'Empreendimento',value:2500,day:25,recurring:true,paid:false},
-{name:'Empreend. Semanal',value:600,day:1,recurring:true,paid:false},
-{name:'Sócio Reembolso',value:3351,day:27,recurring:false,paid:false}
-],
-expenses:[
-{name:'Cartão Mercado',value:800,day:2,cat:'🍔 Alimentação',recurring:true,paid:false},
-{name:'Financiamento Apto',value:3600,day:15,cat:'🏠 Moradia',recurring:true,paid:false},
-{name:'Mercado Pago',value:336,day:16,cat:'💳 Dívidas',inst:'4/10',instCur:4,instTotal:10,paid:false},
-{name:'Cartão Santander',value:7300,day:27,cat:'💳 Dívidas',recurring:false,paid:false},
-{name:'Planejados',value:2900,day:10,cat:'🏠 Moradia',recurring:false,paid:false},
-{name:'Balão Carro',value:7000,day:15,cat:'🚗 Transporte',recurring:false,paid:false},
-{name:'Terapia',value:800,day:20,cat:'💊 Saúde',recurring:true,paid:false},
-{name:'Faculdade Julia',value:700,day:8,cat:'🎓 Educação',recurring:true,paid:false},
-{name:'Perua Escolar',value:280,day:5,cat:'🎓 Educação',recurring:true,paid:false},
-{name:'Água',value:190,day:5,cat:'🏠 Moradia',recurring:true,paid:false},
-{name:'Energia',value:300,day:8,cat:'🏠 Moradia',recurring:true,paid:false},
-{name:'Combustível',value:500,day:20,cat:'🚗 Transporte',recurring:true,paid:false},
-{name:'Natal',value:500,day:20,cat:'🎮 Lazer',recurring:false,paid:false}
-]
-};
-// 2027 months
-for(var m=0;m<12;m++){
-var key=getKey(2027,m);
-var revs=[
-{name:'Adiantamento',value:6044.60,day:15,recurring:true,paid:false},
-{name:'Salário',value:2213,day:30,recurring:true,paid:false},
-{name:'Empreendimento',value:2500,day:25,recurring:true,paid:false},
-{name:'Empreend. Semanal',value:600,day:1,recurring:true,paid:false}
-];
-var exps=[
-{name:'Cartão Mercado',value:800,day:2,cat:'🍔 Alimentação',recurring:true,paid:false},
-{name:'Financiamento Apto',value:3600,day:15,cat:'🏠 Moradia',recurring:true,paid:false},
-{name:'Terapia',value:800,day:20,cat:'💊 Saúde',recurring:true,paid:false},
-{name:'Faculdade Julia',value:700,day:8,cat:'🎓 Educação',recurring:true,paid:false},
-{name:'Perua Escolar',value:280,day:5,cat:'🎓 Educação',recurring:true,paid:false},
-{name:'Água',value:190,day:5,cat:'🏠 Moradia',recurring:true,paid:false},
-{name:'Energia',value:300,day:8,cat:'🏠 Moradia',recurring:true,paid:false},
-{name:'Combustível',value:500,day:20,cat:'🚗 Transporte',recurring:true,paid:false}
-];
-// Mercado Pago until July
-if(m<7){
-var instNum=m+5;
-exps.push({name:'Mercado Pago',value:336,day:16,cat:'💳 Dívidas',inst:instNum+'/10',instCur:instNum,instTotal:10,paid:false});
-}
-// Santander (car until June)
-if(m<6){
-exps.push({name:'Cartão Santander',value:5800,day:27,cat:'💳 Dívidas',recurring:false,paid:false});
-}else{
-exps.push({name:'Cartão Santander',value:2500,day:27,cat:'💳 Dívidas',recurring:false,paid:false});
-}
-// Special events
-if(m===4){
-revs.push({name:'PLR',value:25000,day:5,recurring:false,paid:false});
-exps.push({name:'Balão Carro',value:10000,day:15,cat:'🚗 Transporte',recurring:false,paid:false});
-}
-data.months[key]={revenues:revs,expenses:exps};
-}
-// 2028 - basic
-for(var m=0;m<12;m++){
-var key=getKey(2028,m);
-data.months[key]={
-revenues:[
-{name:'Adiantamento',value:6044.60,day:15,recurring:true,paid:false},
-{name:'Salário',value:3873,day:30,recurring:true,paid:false},
-{name:'Empreendimento',value:2500,day:25,recurring:true,paid:false},
-{name:'Empreend. Semanal',value:600,day:1,recurring:true,paid:false}
-],
-expenses:[
-{name:'Cartão Mercado',value:800,day:2,cat:'🍔 Alimentação',recurring:true,paid:false},
-{name:'Financiamento Apto',value:3500,day:15,cat:'🏠 Moradia',recurring:true,paid:false},
-{name:'Terapia',value:800,day:20,cat:'💊 Saúde',recurring:true,paid:false},
-{name:'Faculdade Julia',value:700,day:8,cat:'🎓 Educação',recurring:true,paid:false},
-{name:'Perua Escolar',value:280,day:5,cat:'🎓 Educação',recurring:true,paid:false},
-{name:'Água',value:190,day:5,cat:'🏠 Moradia',recurring:true,paid:false},
-{name:'Energia',value:300,day:8,cat:'🏠 Moradia',recurring:true,paid:false},
-{name:'Combustível',value:500,day:20,cat:'🚗 Transporte',recurring:true,paid:false},
-{name:'Investimento',value:1500,day:5,cat:'📈 Investimento',recurring:true,paid:false},
-{name:'Reserva Emergência',value:1000,day:5,cat:'🛡️ Reserva',recurring:true,paid:false}
-]
-};
-}
-}
-
-function getMonthData(y,m){
-var key=getKey(y,m);
-if(!data.months[key]){
-data.months[key]={revenues:[],expenses:[]};
-propagateRecurring(y,m);
-saveData();
-}
-return data.months[key];
-}
-
-function propagateRecurring(y,m){
-var key=getKey(y,m);
-var md=data.months[key];
-// Find previous month with data
-var py=y,pm=m-1;
-if(pm<0){pm=11;py--}
-var prevKey=getKey(py,pm);
-if(data.months[prevKey]){
-var prev=data.months[prevKey];
-prev.revenues.forEach(function(r){
-if(r.recurring){
-var exists=md.revenues.some(function(x){return x.name===r.name});
-if(!exists){md.revenues.push({name:r.name,value:r.value,day:r.day,recurring:true,paid:false})}
-}
-});
-prev.expenses.forEach(function(e){
-if(e.recurring){
-var exists=md.expenses.some(function(x){return x.name===e.name});
-if(!exists){md.expenses.push({name:e.name,value:e.value,day:e.day,cat:e.cat||'📦 Outros',recurring:true,paid:false})}
-}
-if(e.instCur&&e.instTotal&&e.instCur<e.instTotal){
-var nextInst=e.instCur+1;
-var exists=md.expenses.some(function(x){return x.name===e.name&&x.instCur===nextInst});
-if(!exists){md.expenses.push({name:e.name,value:e.value,day:e.day,cat:e.cat||'📦 Outros',inst:nextInst+'/'+e.instTotal,instCur:nextInst,instTotal:e.instTotal,paid:false})}
-}
-});
-}
-}
-
-function fmt(v){return'R$ '+v.toFixed(2).replace('.',',').replace(/\B(?=(\d{3})+(?!\d))/g,'.')}
-
-function render(){
-renderYearTabs();
-renderChart();
-renderMonth();
-}
-
-function renderYearTabs(){
-var el=document.getElementById('yearTabs');
-var html='';
-data.years.sort();
-data.years.forEach(function(y){
-html+='<button class="'+(y===curYear?'active':'')+'" onclick="switchYear('+y+')">'+y+'</button>';
-});
-html+='<button class="yr-add" onclick="openAddYear()">+</button>';
-html+='<button class="yr-del" onclick="openDelYear()">🗑️</button>';
-el.innerHTML=html;
-}
-
-function switchYear(y){curYear=y;if(curMonth>11)curMonth=0;render()}
-function changeMonth(d){
-curMonth+=d;
-if(curMonth>11){curMonth=0;curYear++;if(data.years.indexOf(curYear)<0){data.years.push(curYear);saveData()}}
-if(curMonth<0){curMonth=11;curYear--;if(data.years.indexOf(curYear)<0){data.years.push(curYear);saveData()}}
+function init(){
+data=loadData();
+var d=new Date();
+currentMonth=d.getMonth();
+currentYear=d.getFullYear();
+if(!data.years)data.years=[2026,2027,2028];
+if(!data.startingBalance)data.startingBalance={account:0,emergency:0,investments:0};
+if(!data.months)data.months={};
+ensureMonthData(currentYear,currentMonth);
 render();
 }
 
-function openAddYear(){
-document.getElementById('yearModalTitle').textContent='Adicionar Ano';
-document.getElementById('yrInput').value='';
-document.getElementById('modalYear').classList.add('active');
+function loadData(){
+try{var d=localStorage.getItem('finconsult_v4');return d?JSON.parse(d):getDefaultData();}
+catch(e){return getDefaultData();}
 }
-function openDelYear(){
-var y=prompt('Digite o ano que deseja excluir:');
-if(y&&!isNaN(y)){
-y=parseInt(y);
-if(data.years.indexOf(y)>=0){
-if(confirm('Excluir o ano '+y+'? Todos os dados serão apagados.')){
-data.years=data.years.filter(function(x){return x!==y});
-for(var m=0;m<12;m++){delete data.months[getKey(y,m)]}
-if(curYear===y){curYear=data.years[0]||2026;curMonth=0}
-saveData();render();
-}
-}else{alert('Ano não encontrado.')}
-}
-}
-function closeYearModal(){document.getElementById('modalYear').classList.remove('active')}
-function saveYear(){
-var y=parseInt(document.getElementById('yrInput').value);
-if(!y||y<2020||y>2040){alert('Ano inválido');return}
-if(data.years.indexOf(y)<0){
-data.years.push(y);
+
+function saveData(){localStorage.setItem('finconsult_v4',JSON.stringify(data));}
+
+function getDefaultData(){
+var d={years:[2026,2027,2028],startingBalance:{account:0,emergency:0,investments:0},months:{},removedMonths:{}};
+var recRevBase=[
+{name:'Adiantamento',value:6044.60,day:15,recurring:true,category:''},
+{name:'Salário',value:2213,day:30,recurring:true,category:''},
+{name:'Empreendimento',value:2500,day:25,recurring:true,category:''},
+{name:'Empreend. Semanal',value:600,day:1,recurring:true,category:''}
+];
+var recExpBase=[
+{name:'Financiamento Apto',value:3600,day:15,category:'🏠 Moradia',recurring:true},
+{name:'Condomínio',value:1000,day:10,category:'🏠 Moradia',recurring:true},
+{name:'Energia',value:300,day:8,category:'🏠 Moradia',recurring:true},
+{name:'Água',value:190,day:5,category:'🏠 Moradia',recurring:true},
+{name:'Internet',value:150,day:10,category:'🏠 Moradia',recurring:true},
+{name:'Terapia',value:800,day:20,category:'💊 Saúde',recurring:true},
+{name:'Faculdade Julia',value:700,day:8,category:'🎓 Educação',recurring:true},
+{name:'Perua Escolar',value:280,day:5,category:'🎓 Educação',recurring:true},
+{name:'Cartão Mercado',value:790,day:2,category:'🍔 Alimentação',recurring:true},
+{name:'Combustível',value:500,day:20,category:'🚗 Transporte',recurring:true}
+];
+// Pre-load 2026 months
 for(var m=0;m<12;m++){
-var key=getKey(y,m);
-if(!data.months[key]){data.months[key]={revenues:[],expenses:[]};propagateRecurring(y,m)}
+var key='2026-'+pad(m);
+var revs=JSON.parse(JSON.stringify(recRevBase));
+var exps=JSON.parse(JSON.stringify(recExpBase));
+// Adjust for specific months
+if(m<9){// Jan-Sep: pre-loan salary
+revs[1].value=3800;
+}
+// Add Santander
+var santVal=4733;
+exps.push({name:'Cartão Santander',value:santVal,day:27,category:'💳 Dívidas',recurring:true});
+// Add Mercado Pago (starts later)
+if(m>=8){exps.push({name:'Mercado Pago',value:336,day:16,category:'💳 Dívidas',recurring:true,installment:true,currentInst:(m-8+1),totalInst:10});}
+// Add Planejados (ends Jan 2027)
+if(m<=11){
+var planVal=800;
+if(m==11)planVal=2900;
+exps.push({name:'Planejados',value:planVal,day:12,category:'🏠 Moradia',recurring:false});
+}
+// Carro (Jul-Jun on Santander)
+if(m>=6){exps.push({name:'Parcela Carro',value:1535.25,day:27,category:'🚗 Transporte',recurring:false,installment:true,currentInst:(m-6+1),totalInst:12});}
+// Special incomes
+if(m==4){revs.push({name:'PLR',value:25000,day:5,recurring:false,category:''});}
+if(m==7){revs.push({name:'13º (1ª parcela)',value:6977,day:20,recurring:false,category:''});}
+if(m==10){revs.push({name:'13º (2ª parcela)',value:6978,day:20,recurring:false,category:''});}
+// Dec specials
+if(m==11){
+exps.push({name:'Balão Carro',value:7000,day:15,category:'🚗 Transporte',recurring:false});
+revs.push({name:'13º Salário',value:13955,day:1,recurring:false,category:''});
+}
+// Oct specifics
+if(m==9){
+revs.push({name:'Férias',value:7500,day:29,recurring:false,category:''});
+exps.push({name:'Pneus + Alinhamento',value:1600,day:30,category:'🚗 Transporte',recurring:false});
+// Override Cartão Mercado for Oct
+for(var i=0;i<exps.length;i++){if(exps[i].name=='Cartão Mercado'){exps[i].value=1700;break;}}
+}
+// Nov specifics
+if(m==10){
+revs.push({name:'Férias',value:7500,day:1,recurring:false,category:''});
+}
+// Mark past months as all paid
+var allPaid=(m<9);
+var rList=[];for(var i=0;i<revs.length;i++){rList.push({id:Date.now()+Math.random()*10000+i,name:revs[i].name,value:revs[i].value,day:revs[i].day,recurring:revs[i].recurring||false,category:revs[i].category||'',paid:allPaid});}
+var eList=[];for(var i=0;i<exps.length;i++){var e=exps[i];eList.push({id:Date.now()+Math.random()*10000+1000+i,name:e.name,value:e.value,day:e.day,category:e.category||'❓ Outros',recurring:e.recurring||false,paid:allPaid,installment:e.installment||false,currentInst:e.currentInst||0,totalInst:e.totalInst||0});}
+d.months[key]={revenues:rList,expenses:eList};
+}
+// Pre-load 2027
+for(var m=0;m<12;m++){
+var key='2027-'+pad(m);
+var revs=JSON.parse(JSON.stringify(recRevBase));
+var exps=JSON.parse(JSON.stringify(recExpBase));
+exps.push({name:'Cartão Santander',value:4733,day:27,category:'💳 Dívidas',recurring:true});
+// Mercado Pago until Jul
+if(m<7){exps.push({name:'Mercado Pago',value:336,day:16,category:'💳 Dívidas',recurring:false,installment:true,currentInst:(m+3),totalInst:10});}
+// Carro until Jun
+if(m<6){exps.push({name:'Parcela Carro',value:1535.25,day:27,category:'🚗 Transporte',recurring:false,installment:true,currentInst:(m+7),totalInst:12});}
+// May balloon + PLR
+if(m==4){
+exps.push({name:'Balão Carro',value:10000,day:15,category:'🚗 Transporte',recurring:false});
+revs.push({name:'PLR',value:25000,day:5,recurring:false,category:''});
+}
+// 13th salary
+if(m==7){revs.push({name:'13º (1ª parcela)',value:6977,day:20,recurring:false,category:''});}
+if(m==10){revs.push({name:'13º (2ª parcela)',value:6978,day:20,recurring:false,category:''});}
+var rList=[];for(var i=0;i<revs.length;i++){rList.push({id:Date.now()+Math.random()*10000+2000+m*100+i,name:revs[i].name,value:revs[i].value,day:revs[i].day,recurring:revs[i].recurring||false,category:revs[i].category||'',paid:false});}
+var eList=[];for(var i=0;i<exps.length;i++){var e=exps[i];eList.push({id:Date.now()+Math.random()*10000+3000+m*100+i,name:e.name,value:e.value,day:e.day,category:e.category||'❓ Outros',recurring:e.recurring||false,paid:false,installment:e.installment||false,currentInst:e.currentInst||0,totalInst:e.totalInst||0});}
+d.months[key]={revenues:rList,expenses:eList};
+}
+// 2028 - just recurring
+for(var m=0;m<12;m++){
+var key='2028-'+pad(m);
+var revs=JSON.parse(JSON.stringify(recRevBase));
+var exps=JSON.parse(JSON.stringify(recExpBase));
+var rList=[];for(var i=0;i<revs.length;i++){rList.push({id:Date.now()+Math.random()*10000+4000+m*100+i,name:revs[i].name,value:revs[i].value,day:revs[i].day,recurring:revs[i].recurring||false,category:revs[i].category||'',paid:false});}
+var eList=[];for(var i=0;i<exps.length;i++){var e=exps[i];eList.push({id:Date.now()+Math.random()*10000+5000+m*100+i,name:e.name,value:e.value,day:e.day,category:e.category||'❓ Outros',recurring:e.recurring||false,paid:false,installment:false,currentInst:0,totalInst:0});}
+d.months[key]={revenues:rList,expenses:eList};
+}
+return d;
+}
+
+function pad(n){return n<10?'0'+n:''+n;}
+
+function getMonthKey(y,m){return y+'-'+pad(m);}
+
+function ensureMonthData(y,m){
+var key=getMonthKey(y,m);
+if(!data.months[key]){
+data.months[key]={revenues:[],expenses:[]};
+// Propagate recurring from previous month
+var prevM=m-1,prevY=y;
+if(prevM<0){prevM=11;prevY--;}
+var prevKey=getMonthKey(prevY,prevM);
+if(data.months[prevKey]){
+var pr=data.months[prevKey].revenues;
+for(var i=0;i<pr.length;i++){
+if(pr[i].recurring){
+data.months[key].revenues.push({id:Date.now()+Math.random()*10000,name:pr[i].name,value:pr[i].value,day:pr[i].day,recurring:true,category:pr[i].category||'',paid:false});
+}
+}
+var pe=data.months[prevKey].expenses;
+for(var i=0;i<pe.length;i++){
+if(pe[i].recurring){
+data.months[key].expenses.push({id:Date.now()+Math.random()*10000,name:pe[i].name,value:pe[i].value,day:pe[i].day,category:pe[i].category,recurring:true,paid:false,installment:false,currentInst:0,totalInst:0});
+}
+if(pe[i].installment && pe[i].currentInst<pe[i].totalInst){
+data.months[key].expenses.push({id:Date.now()+Math.random()*10000,name:pe[i].name,value:pe[i].value,day:pe[i].day,category:pe[i].category,recurring:false,paid:false,installment:true,currentInst:pe[i].currentInst+1,totalInst:pe[i].totalInst});
+}
+}
 }
 saveData();
 }
-closeYearModal();
-curYear=y;curMonth=0;render();
+}
+
+function changeMonth(dir){
+currentMonth+=dir;
+if(currentMonth>11){currentMonth=0;currentYear++;}
+if(currentMonth<0){currentMonth=11;currentYear--;}
+ensureMonthData(currentYear,currentMonth);
+render();
+}
+
+function changeYear(y){
+currentYear=y;
+currentMonth=0;
+ensureMonthData(currentYear,currentMonth);
+render();
+}
+
+function render(){
+renderYearNav();
+renderChart();
+renderSummary();
+renderCategories();
+renderRevenues();
+renderExpenses();
+}
+
+function renderYearNav(){
+var html='';
+for(var i=0;i<data.years.length;i++){
+var y=data.years[i];
+var cls=y==currentYear?'active':'';
+html+='<button class="'+cls+'" onclick="changeYear('+y+')">'+y+'</button>';
+}
+html+='<button class="add-year" onclick="addYear()">+</button>';
+html+='<button class="del-year" onclick="deleteYear()">🗑️</button>';
+document.getElementById('yearNav').innerHTML=html;
+}
+
+function addYear(){
+var maxY=Math.max.apply(null,data.years);
+var newY=maxY+1;
+data.years.push(newY);
+for(var m=0;m<12;m++){ensureMonthData(newY,m);}
+saveData();
+changeYear(newY);
+}
+
+function deleteYear(){
+if(data.years.length<=1){alert('Precisa ter pelo menos 1 ano!');return;}
+var y=prompt('Qual ano deseja excluir?\nAnos: '+data.years.join(', '));
+if(!y)return;
+y=parseInt(y);
+var idx=data.years.indexOf(y);
+if(idx===-1){alert('Ano não encontrado!');return;}
+if(!confirm('Excluir '+y+' e todos os seus dados?'))return;
+data.years.splice(idx,1);
+for(var m=0;m<12;m++){delete data.months[getMonthKey(y,m)];}
+if(currentYear==y){currentYear=data.years[0];currentMonth=0;}
+saveData();
+render();
 }
 
 function renderChart(){
-document.getElementById('chartTitle').textContent='📈 Projeção '+curYear;
-var el=document.getElementById('chart');
-var totals=[];
+document.getElementById('chartTitle').textContent='📈 Projeção '+currentYear;
+var html='';
 var maxVal=1;
+var totals=[];
 var now=new Date();
-var curYM=now.getFullYear()*12+now.getMonth();
+var nowY=now.getFullYear();
+var nowM=now.getMonth();
+var greenCount=0,redCount=0,yearTotal=0;
 for(var m=0;m<12;m++){
-var key=getKey(curYear,m);
-if(data.removed&&data.removed.indexOf(key)>=0){totals.push(null);continue}
+var key=getMonthKey(currentYear,m);
+if(data.removedMonths && data.removedMonths[key]){totals.push(null);continue;}
 var md=data.months[key];
-if(!md){totals.push(0);continue}
-var inc=0,exp=0;
-md.revenues.forEach(function(r){inc+=r.value});
-md.expenses.forEach(function(e){exp+=e.value});
-var bal=inc-exp;
+var rev=0,exp=0;
+if(md){
+for(var i=0;i<md.revenues.length;i++)rev+=md.revenues[i].value;
+for(var i=0;i<md.expenses.length;i++)exp+=md.expenses[i].value;
+}
+var bal=rev-exp;
 totals.push(bal);
 if(Math.abs(bal)>maxVal)maxVal=Math.abs(bal);
 }
-var html='<div class="chart-mid"></div>';
-var posCount=0,negCount=0,yearTotal=0;
 for(var m=0;m<12;m++){
-var evtKey=getKey(curYear,m);
-var evt=EVENTS[evtKey]||'';
-var thisYM=curYear*12+m;
-var isCur=thisYM===curYM;
-var isFut=thisYM>curYM;
-var val=totals[m];
-if(val===null){
-html+='<div class="bar-wrap"><div class="bar-lbl">'+MONTHS[m].substr(0,3)+'</div></div>';
-continue;
-}
-yearTotal+=val;
-var h=Math.round(Math.abs(val)/maxVal*45);
-if(h<2&&val!==0)h=2;
-var cls=isFut?'bar-future':'';
-if(isCur)cls+=' bar-cur';
-if(val>=0){
-posCount++;
-html+='<div class="bar-wrap">';
-if(evt)html+='<div class="bar-evt">'+evt+'</div>';
-html+='<div style="flex:1;display:flex;flex-direction:column;justify-content:flex-end;align-items:center">';
-html+='<div class="bar-pos '+cls+'" style="height:'+h+'px"></div>';
-html+='</div><div style="flex:1"></div>';
-html+='<div class="bar-lbl">'+MONTHS[m].substr(0,3)+'</div></div>';
-}else{
-negCount++;
-html+='<div class="bar-wrap">';
-if(evt)html+='<div class="bar-evt">'+evt+'</div>';
-html+='<div style="flex:1"></div>';
-html+='<div style="flex:1;display:flex;flex-direction:column;justify-content:flex-start;align-items:center">';
-html+='<div class="bar-neg '+cls+'" style="height:'+h+'px"></div>';
+if(totals[m]===null)continue;
+var bal=totals[m];
+var pct=Math.min(Math.abs(bal)/maxVal*100,100);
+var isPositive=bal>=0;
+var isPast=(currentYear<nowY)||(currentYear==nowY&&m<nowM);
+var isCurrent=(currentYear==nowY&&m==nowM);
+var isFuture=(currentYear>nowY)||(currentYear==nowY&&m>nowM);
+var barClass=isPositive?'positive':'negative';
+if(isFuture)barClass+=' future';
+if(isCurrent)barClass+=' current';
+var evKey=currentYear+'-'+pad(m);
+var event=EVENTS[evKey]||'';
+var valStr=isPositive?'+R$'+formatNum(bal):'-R$'+formatNum(Math.abs(bal));
+var valClass=isPositive?'green':'red';
+if(isPositive)greenCount++;else redCount++;
+yearTotal+=bal;
+html+='<div class="chart-row">';
+html+='<div class="chart-month">'+MONTHS[m].substr(0,3)+'</div>';
+html+='<div class="chart-icon">'+(isPast?'✅':(isCurrent?'📍':'🔮'))+'</div>';
+html+='<div class="chart-bar-container"><div class="chart-bar '+barClass+'" style="width:'+Math.max(pct,3)+'%"></div></div>';
+html+='<div class="chart-value '+valClass+'">'+valStr+'</div>';
+if(event)html+='<div class="chart-event">'+event+'</div>';
 html+='</div>';
-html+='<div class="bar-lbl">'+MONTHS[m].substr(0,3)+'</div></div>';
 }
-}
-el.innerHTML=html;
-var resEl=document.getElementById('chartResult');
-var resColor=yearTotal>=0?'green':'red';
-resEl.innerHTML='🟢 '+posCount+' positivos | 🔴 '+negCount+' negativos<br><span style="color:'+resColor+'">Resultado: '+fmt(yearTotal)+'</span>';
+document.getElementById('chartContainer').innerHTML=html;
+var ytClass=yearTotal>=0?'green':'red';
+var ytStr=yearTotal>=0?'+R$ '+formatNum(yearTotal):'-R$ '+formatNum(Math.abs(yearTotal));
+document.getElementById('chartSummary').innerHTML='<span>🟢 '+greenCount+'</span><span>🔴 '+redCount+'</span><span class="'+ytClass+'">Resultado: '+ytStr+'</span>';
 }
 
-function renderMonth(){
-document.getElementById('monthLabel').textContent=MONTHS[curMonth]+'/'+curYear;
-var md=getMonthData(curYear,curMonth);
-var totalRec=0,totalExp=0,totalPaid=0,totalPend=0;
-md.revenues.forEach(function(r){totalRec+=r.value});
-md.expenses.forEach(function(e){totalExp+=e.value;if(e.paid)totalPaid+=e.value;else totalPend+=e.value});
-var remain=totalRec-totalExp;
-document.getElementById('sumRec').textContent=fmt(totalRec);
-document.getElementById('sumTotal').textContent=fmt(totalExp);
-document.getElementById('sumPaid').textContent=fmt(totalPaid);
-document.getElementById('sumPend').textContent=fmt(totalPend);
-var remEl=document.getElementById('sumRemain');
-var remValEl=document.getElementById('sumRemVal');
-remValEl.textContent=fmt(remain);
-remEl.className='summary-remain';
-if(remain>1000)remEl.classList.add('bg-green');
-else if(remain>=0)remEl.classList.add('bg-yellow');
-else remEl.classList.add('bg-red');
-// Alert bar
-var alertEl=document.getElementById('alertBar');
-var pct=totalRec>0?totalExp/totalRec*100:0;
-if(pct>=100){alertEl.style.display='block';alertEl.style.background='#e74c3c';alertEl.style.color='#fff';alertEl.textContent='🚨 ESTOUROU! Gastos ultrapassaram a receita!'}
-else if(pct>=95){alertEl.style.display='block';alertEl.style.background='#e74c3c';alertEl.style.color='#fff';alertEl.textContent='🔴 PERIGO: 95%+ da renda comprometida!'}
-else if(pct>=85){alertEl.style.display='block';alertEl.style.background='#ff9800';alertEl.style.color='#fff';alertEl.textContent='🟠 Cuidado: 85% da renda gasta. Só essencial!'}
-else if(pct>=70){alertEl.style.display='block';alertEl.style.background='#ffc107';alertEl.style.color='#333';alertEl.textContent='🟡 Atenção: 70% da renda comprometida.'}
-else if(pct>=50){alertEl.style.display='block';alertEl.style.background='#e8f5e9';alertEl.style.color='#333';alertEl.textContent='🟢 Metade da renda usada. No ritmo.'}
-else{alertEl.style.display='none'}
-// Starting balance
-var sbEl=document.getElementById('startingBal');
-var sb=data.startingBal;
-if(sb&&(sb.conta>0||sb.reserva>0||sb.invest>0)){
-sbEl.style.display='flex';
-var total=sb.conta+sb.reserva+sb.invest;
-document.getElementById('sbValue').textContent=fmt(total)+' (Conta: '+fmt(sb.conta)+' | Reserva: '+fmt(sb.reserva)+' | Invest: '+fmt(sb.invest)+')';
-}else{sbEl.style.display='none'}
-// Revenue list
-var recEl=document.getElementById('recList');
-var recHtml='';
-var sortedRev=md.revenues.slice().sort(function(a,b){return a.day-b.day});
-sortedRev.forEach(function(r,i){
-var origIdx=md.revenues.indexOf(r);
-var paidCls=r.paid?'paid-item':'';
-var checkCls=r.paid?'checked':'';
-recHtml+='<div class="item '+paidCls+'">';
-recHtml+='<div class="item-check '+checkCls+'" onclick="togglePaid(\'revenue\','+origIdx+')">✓</div>';
-recHtml+='<div class="item-info"><div class="item-name">'+r.name+'</div>';
-recHtml+='<div class="item-detail">Dia '+r.day;
-if(r.recurring)recHtml+=' | 🔄';
-recHtml+='</div></div>';
-recHtml+='<div class="item-value income-val">+'+fmt(r.value)+'</div>';
-recHtml+='<div class="item-actions"><button onclick="openEdit(\'revenue\','+origIdx+')">✏️</button><button onclick="delDirect(\'revenue\','+origIdx+')">🗑️</button></div>';
-recHtml+='</div>';
-});
-recEl.innerHTML=recHtml;
-// Expense lists
-var pendEl=document.getElementById('pendList');
-var paidEl=document.getElementById('paidList');
-var pendItems=[];
-var paidItems=[];
-md.expenses.forEach(function(e,i){
-e._idx=i;
-if(e.paid)paidItems.push(e);else pendItems.push(e);
-});
-pendItems.sort(function(a,b){return a.day-b.day});
-paidItems.sort(function(a,b){return a.day-b.day});
-var pendHtml='';
-pendItems.forEach(function(e){pendHtml+=renderExpenseItem(e)});
-pendEl.innerHTML=pendHtml||'<div style="text-align:center;color:#999;font-size:13px;padding:10px">Nenhuma conta pendente 🎉</div>';
-var paidHtml='';
-paidItems.forEach(function(e){paidHtml+=renderExpenseItem(e)});
-paidEl.innerHTML=paidHtml;
-document.getElementById('paidSep').style.display=paidItems.length>0?'block':'none';
-// Category summary
-renderCatSummary(md);
+function renderSummary(){
+var key=getMonthKey(currentYear,currentMonth);
+var md=data.months[key];
+if(!md){document.getElementById('summarySection').innerHTML='';return;}
+var totalRev=0,totalExp=0,totalPaid=0,totalPending=0;
+for(var i=0;i<md.revenues.length;i++){totalRev+=md.revenues[i].value;}
+for(var i=0;i<md.expenses.length;i++){
+totalExp+=md.expenses[i].value;
+if(md.expenses[i].paid)totalPaid+=md.expenses[i].value;
+else totalPending+=md.expenses[i].value;
+}
+var remaining=totalRev-totalExp;
+var pctUsed=totalRev>0?Math.round(totalExp/totalRev*100):0;
+var remClass,remBg,remLabel;
+if(remaining>=0){
+if(remaining<500){remClass='yellow';remBg='warning';remLabel='⚠️ SOBRA';}
+else{remClass='green';remBg='positive';remLabel='🟢 SOBRA';}
+}else{remClass='red';remBg='negative';remLabel='🔴 FALTA';}
+var alertHtml='';
+if(pctUsed>=100)alertHtml='<div class="alert-bar critical">🚨 ESTOUROU! '+pctUsed+'% da renda comprometida</div>';
+else if(pctUsed>=95)alertHtml='<div class="alert-bar red">🔴 PERIGO: '+pctUsed+'% da renda comprometida</div>';
+else if(pctUsed>=85)alertHtml='<div class="alert-bar orange">🟠 CUIDADO: '+pctUsed+'% da renda comprometida</div>';
+else if(pctUsed>=70)alertHtml='<div class="alert-bar yellow">🟡 ATENÇÃO: '+pctUsed+'% da renda comprometida</div>';
+else if(pctUsed>=50)alertHtml='<div class="alert-bar green">🟢 '+pctUsed+'% da renda usada. No ritmo.</div>';
+var html='<div class="summary-grid">';
+html+='<div class="summary-item"><div class="label">💵 Receita</div><div class="value green">R$ '+formatNum(totalRev)+'</div></div>';
+html+='<div class="summary-item"><div class="label">💸 Total Contas</div><div class="value red">R$ '+formatNum(totalExp)+'</div></div>';
+html+='<div class="summary-item"><div class="label">✅ Pago</div><div class="value">R$ '+formatNum(totalPaid)+'</div></div>';
+html+='<div class="summary-item"><div class="label">⏳ Pendente</div><div class="value">R$ '+formatNum(totalPending)+'</div></div>';
+html+='</div>';
+html+='<div class="summary-remaining '+remBg+'">';
+html+='<div class="label">'+remLabel+'</div>';
+html+='<div class="value '+remClass+'">R$ '+formatNum(Math.abs(remaining))+'</div>';
+html+='</div>';
+html+=alertHtml;
+document.getElementById('summarySection').innerHTML=html;
+document.getElementById('monthLabel').textContent=MONTHS[currentMonth]+' '+currentYear;
+}
+
+function renderCategories(){
+var key=getMonthKey(currentYear,currentMonth);
+var md=data.months[key];
+if(!md){document.getElementById('catSection').innerHTML='';return;}
+var totalRev=0;
+for(var i=0;i<md.revenues.length;i++)totalRev+=md.revenues[i].value;
+var catTotals={};
+for(var i=0;i<CATEGORIES.length;i++)catTotals[CATEGORIES[i]]=0;
+for(var i=0;i<md.expenses.length;i++){
+var c=md.expenses[i].category||'❓ Outros';
+if(!catTotals[c])catTotals[c]=0;
+catTotals[c]+=md.expenses[i].value;
+}
+var html='<div class="section-title clickable" onclick="toggleCat()">📊 Por Categoria ▼</div>';
+html+='<div id="catDetail" style="display:none">';
+html+='<div class="cat-row cat-header"><div class="cat-icon"></div><div class="cat-name">Categoria</div><div class="cat-real">Real</div><div class="cat-sug">Sugerido</div><div class="cat-status"></div></div>';
+for(var i=0;i<CATEGORIES.length;i++){
+var cat=CATEGORIES[i];
+var real=catTotals[cat]||0;
+var pct=CAT_PERCENTS[cat]||0;
+var sug=Math.round(totalRev*pct/100);
+if(pct==0&&real==0)continue;
+var status='';
+if(pct>0){
+if(real<=sug)status='🟢';
+else status='🔴';
+}
+html+='<div class="cat-row"><div class="cat-icon">'+cat.charAt(0)+cat.charAt(1)+'</div><div class="cat-name">'+cat.substring(2)+'</div><div class="cat-real">R$ '+formatNum(real)+'</div><div class="cat-sug">'+(pct>0?'R$ '+formatNum(sug):'-')+'</div><div class="cat-status">'+status+'</div></div>';
+}
+html+='</div>';
+document.getElementById('catSection').innerHTML=html;
+}
+
+function toggleCat(){
+var el=document.getElementById('catDetail');
+el.style.display=el.style.display=='none'?'block':'none';
+}
+
+function renderRevenues(){
+var key=getMonthKey(currentYear,currentMonth);
+var md=data.months[key];
+if(!md){document.getElementById('revenueSection').innerHTML='';return;}
+var html='<div class="section-title">💵 Receitas</div>';
+var sorted=md.revenues.slice().sort(function(a,b){return a.day-b.day;});
+for(var i=0;i<sorted.length;i++){
+var r=sorted[i];
+var paidClass=r.paid?'paid':'';
+var checkClass=r.paid?'checked':'';
+html+='<div class="item '+paidClass+'">';
+html+='<div class="item-check '+checkClass+'" onclick="toggleRevenuePaid(\''+r.id+'\')">✓</div>';
+html+='<div class="item-info"><div class="item-name">'+r.name+'</div><div class="item-detail">Dia '+r.day+(r.recurring?' · 🔄 Recorrente':'')+'</div></div>';
+html+='<div class="item-value income">+R$ '+formatNum(r.value)+'</div>';
+html+='<div class="item-actions"><button onclick="editItem(\'revenue\',\''+r.id+'\')">✏️</button><button onclick="deleteItem(\'revenue\',\''+r.id+'\')">🗑️</button></div>';
+html+='</div>';
+}
+document.getElementById('revenueSection').innerHTML=html;
+}
+
+function renderExpenses(){
+var key=getMonthKey(currentYear,currentMonth);
+var md=data.months[key];
+if(!md){document.getElementById('pendingSection').innerHTML='';document.getElementById('paidSection').innerHTML='';return;}
+var pending=[],paid=[];
+for(var i=0;i<md.expenses.length;i++){
+if(md.expenses[i].paid)paid.push(md.expenses[i]);
+else pending.push(md.expenses[i]);
+}
+pending.sort(function(a,b){return a.day-b.day;});
+paid.sort(function(a,b){return a.day-b.day;});
+var html='<div class="section-title">📋 Contas Pendentes ('+pending.length+')</div>';
+for(var i=0;i<pending.length;i++){html+=renderExpenseItem(pending[i]);}
+if(pending.length==0)html+='<div style="text-align:center;color:#999;font-size:12px;padding:10px">Nenhuma conta pendente 🎉</div>';
+document.getElementById('pendingSection').innerHTML=html;
+var html2='';
+if(paid.length>0){
+html2='<div class="separator">✅ Pagas ('+paid.length+')</div>';
+for(var i=0;i<paid.length;i++){html2+=renderExpenseItem(paid[i]);}
+}
+document.getElementById('paidSection').innerHTML=html2;
 }
 
 function renderExpenseItem(e){
-var paidCls=e.paid?'paid-item':'';
-var checkCls=e.paid?'checked':'';
+var paidClass=e.paid?'paid':'';
+var checkClass=e.paid?'checked':'';
 var instLabel='';
-if(e.instCur&&e.instTotal)instLabel=' | '+e.instCur+'/'+e.instTotal;
-var html='<div class="item '+paidCls+'">';
-html+='<div class="item-check '+checkCls+'" onclick="togglePaid(\'expense\','+e._idx+')">✓</div>';
-html+='<div class="item-info"><div class="item-name">'+e.name+'</div>';
-html+='<div class="item-detail">Dia '+e.day;
-if(e.cat)html+=' | '+e.cat;
-if(e.recurring)html+=' | 🔄';
-html+=instLabel+'</div></div>';
-html+='<div class="item-value expense-val">-'+fmt(e.value)+'</div>';
-html+='<div class="item-actions"><button onclick="openEdit(\'expense\','+e._idx+')">✏️</button><button onclick="delDirect(\'expense\','+e._idx+')">🗑️</button></div>';
+if(e.installment&&e.totalInst>0)instLabel=' · '+e.currentInst+'/'+e.totalInst;
+var html='<div class="item '+paidClass+'">';
+html+='<div class="item-check '+checkClass+'" onclick="toggleExpensePaid(\''+e.id+'\')">✓</div>';
+html+='<div class="item-info"><div class="item-name">'+e.name+'</div><div class="item-detail">Dia '+e.day+' · '+e.category+instLabel+(e.recurring?' · 🔄':'')+'</div></div>';
+html+='<div class="item-value expense">-R$ '+formatNum(e.value)+'</div>';
+html+='<div class="item-actions"><button onclick="editItem(\'expense\',\''+e.id+'\')">✏️</button><button onclick="deleteItem(\'expense\',\''+e.id+'\')">🗑️</button></div>';
 html+='</div>';
 return html;
 }
 
-function renderCatSummary(md){
-var cats={};
-md.expenses.forEach(function(e){
-var c=e.cat||'📦 Outros';
-if(!cats[c])cats[c]=0;
-cats[c]+=e.value;
-});
-var totalExp=0;
-md.expenses.forEach(function(e){totalExp+=e.value});
-var cl=document.getElementById('catList');
-var html='';
-var sorted=Object.keys(cats).sort(function(a,b){return cats[b]-cats[a]});
-sorted.forEach(function(c){
-var pct=totalExp>0?(cats[c]/totalExp*100).toFixed(0):'0';
-html+='<div class="cat-item"><span>'+c+' <span class="cat-pct">('+pct+'%)</span></span><span>'+fmt(cats[c])+'</span></div>';
-});
-cl.innerHTML=html;
+function toggleRevenuePaid(id){
+var key=getMonthKey(currentYear,currentMonth);
+var md=data.months[key];
+for(var i=0;i<md.revenues.length;i++){
+if(md.revenues[i].id==id){md.revenues[i].paid=!md.revenues[i].paid;break;}
 }
-
-function toggleCatSummary(){
-var cl=document.getElementById('catList');
-var ar=document.getElementById('catArrow');
-cl.classList.toggle('open');
-ar.textContent=cl.classList.contains('open')?'▲':'▼';
-}
-
-function togglePaid(type,idx){
-var md=getMonthData(curYear,curMonth);
-var list=type==='revenue'?md.revenues:md.expenses;
-if(list[idx])list[idx].paid=!list[idx].paid;
 saveData();render();
 }
 
-function openModal(type){
-editingItem=null;editingType=type;
-document.getElementById('modalTitle').textContent=type==='revenue'?'Nova Receita':'Nova Conta';
-document.getElementById('mName').value='';
-document.getElementById('mValue').value='';
-document.getElementById('mDay').value='';
-document.getElementById('mCat').value='🏠 Moradia';
-document.getElementById('mRecurring').classList.remove('on');
-document.getElementById('mInstToggle').classList.remove('on');
-document.getElementById('instRow').classList.remove('show');
-document.getElementById('mInstCur').value='';
-document.getElementById('mInstTotal').value='';
-document.getElementById('catField').style.display=type==='expense'?'block':'none';
-document.getElementById('btnDel').style.display='none';
-document.getElementById('modalBg').classList.add('active');
+function toggleExpensePaid(id){
+var key=getMonthKey(currentYear,currentMonth);
+var md=data.months[key];
+for(var i=0;i<md.expenses.length;i++){
+if(md.expenses[i].id==id){md.expenses[i].paid=!md.expenses[i].paid;break;}
+}
+saveData();render();
 }
 
-function openEdit(type,idx){
-editingType=type;editingItem=idx;
-var md=getMonthData(curYear,curMonth);
-var item=type==='revenue'?md.revenues[idx]:md.expenses[idx];
-document.getElementById('modalTitle').textContent=type==='revenue'?'Editar Receita':'Editar Conta';
-document.getElementById('mName').value=item.name;
-document.getElementById('mValue').value=item.value;
-document.getElementById('mDay').value=item.day;
-document.getElementById('catField').style.display=type==='expense'?'block':'none';
-if(item.cat)document.getElementById('mCat').value=item.cat;
-var recT=document.getElementById('mRecurring');
-recT.classList.toggle('on',!!item.recurring);
-var instT=document.getElementById('mInstToggle');
-var hasInst=item.instCur&&item.instTotal;
-instT.classList.toggle('on',!!hasInst);
-document.getElementById('instRow').classList.toggle('show',!!hasInst);
-document.getElementById('mInstCur').value=hasInst?item.instCur:'';
-document.getElementById('mInstTotal').value=hasInst?item.instTotal:'';
-document.getElementById('btnDel').style.display='inline-block';
-document.getElementById('modalBg').classList.add('active');
+function openModal(type,editId){
+var key=getMonthKey(currentYear,currentMonth);
+var md=data.months[key];
+var item=null;
+if(editId){
+var list=type=='revenue'?md.revenues:md.expenses;
+for(var i=0;i<list.length;i++){if(list[i].id==editId){item=list[i];break;}}
+}
+var title=editId?'Editar ':(type=='revenue'?'Nova Receita':'Nova Conta');
+var html='<h3>'+title+'</h3>';
+html+='<label>Nome</label><input type="text" id="modalName" value="'+(item?item.name:'')+'">';
+html+='<div class="modal-row"><div><label>Valor (R$)</label><input type="number" id="modalValue" value="'+(item?item.value:'')+'" step="0.01"></div>';
+html+='<div><label>Dia</label><input type="number" id="modalDay" value="'+(item?item.day:'')+'" min="1" max="31"></div></div>';
+if(type=='expense'){
+html+='<label>Categoria</label><select id="modalCat">';
+for(var i=0;i<CATEGORIES.length;i++){
+var sel=(item&&item.category==CATEGORIES[i])?'selected':'';
+html+='<option value="'+CATEGORIES[i]+'" '+sel+'>'+CATEGORIES[i]+'</option>';
+}
+html+='</select>';
+html+='<div class="toggle-container"><div class="toggle'+(item&&item.installment?' active':'')+'" id="toggleInst" onclick="this.classList.toggle(\'active\');toggleInstFields()"></div><span class="toggle-label">Parcelado</span></div>';
+html+='<div id="instFields" style="display:'+(item&&item.installment?'flex':'none')+'" class="modal-row"><div><label>Parcela atual</label><input type="number" id="modalCurInst" value="'+(item?item.currentInst||1:1)+'" min="1"></div><div><label>Total parcelas</label><input type="number" id="modalTotInst" value="'+(item?item.totalInst||1:1)+'" min="1"></div></div>';
+}
+html+='<div class="toggle-container"><div class="toggle'+(item&&item.recurring?' active':'')+'" id="toggleRec" onclick="this.classList.toggle(\'active\')"></div><span class="toggle-label">Recorrente (repete todo mês)</span></div>';
+html+='<div class="modal-buttons">';
+if(editId)html+='<button class="btn-delete" onclick="deleteItem(\''+type+'\',\''+editId+'\')">🗑️ Excluir</button>';
+html+='<button class="btn-cancel" onclick="closeModal()">Cancelar</button>';
+html+='<button class="btn-save" onclick="saveItem(\''+type+'\','+(editId?'\''+editId+'\'':'null')+')">Salvar</button>';
+html+='</div>';
+document.getElementById('modalContent').innerHTML=html;
+document.getElementById('modalOverlay').classList.add('active');
 }
 
-function closeModal(){document.getElementById('modalBg').classList.remove('active');editingItem=null;editingType=null}
-
-function toggleInstallment(){
-var t=document.getElementById('mInstToggle');
-t.classList.toggle('on');
-document.getElementById('instRow').classList.toggle('show',t.classList.contains('on'));
+function toggleInstFields(){
+var el=document.getElementById('instFields');
+if(el)el.style.display=document.getElementById('toggleInst').classList.contains('active')?'flex':'none';
 }
 
-function saveItem(){
-var name=document.getElementById('mName').value.trim();
-var value=parseFloat(document.getElementById('mValue').value);
-var day=parseInt(document.getElementById('mDay').value);
-if(!name||isNaN(value)||isNaN(day)){alert('Preencha todos os campos');return}
-var recurring=document.getElementById('mRecurring').classList.contains('on');
-var hasInst=document.getElementById('mInstToggle').classList.contains('on');
-var instCur=hasInst?parseInt(document.getElementById('mInstCur').value):null;
-var instTotal=hasInst?parseInt(document.getElementById('mInstTotal').value):null;
-if(hasInst&&(!instCur||!instTotal)){alert('Preencha as parcelas');return}
-var md=getMonthData(curYear,curMonth);
-var item={name:name,value:value,day:day,recurring:recurring,paid:false};
-if(editingType==='expense'){
-item.cat=document.getElementById('mCat').value;
+function closeModal(){document.getElementById('modalOverlay').classList.remove('active');}
+
+function saveItem(type,editId){
+var name=document.getElementById('modalName').value.trim();
+var value=parseFloat(document.getElementById('modalValue').value);
+var day=parseInt(document.getElementById('modalDay').value);
+if(!name||isNaN(value)||isNaN(day)){alert('Preencha todos os campos!');return;}
+var recurring=document.getElementById('toggleRec').classList.contains('active');
+var key=getMonthKey(currentYear,currentMonth);
+var md=data.months[key];
+if(type=='revenue'){
+if(editId){
+for(var i=0;i<md.revenues.length;i++){
+if(md.revenues[i].id==editId){
+md.revenues[i].name=name;md.revenues[i].value=value;md.revenues[i].day=day;md.revenues[i].recurring=recurring;break;
 }
-if(hasInst){
-item.inst=instCur+'/'+instTotal;
-item.instCur=instCur;
-item.instTotal=instTotal;
-item.recurring=false;
 }
-if(editingItem!==null){
-var list=editingType==='revenue'?md.revenues:md.expenses;
-item.paid=list[editingItem].paid;
-list[editingItem]=item;
 }else{
-if(editingType==='revenue')md.revenues.push(item);
-else md.expenses.push(item);
+md.revenues.push({id:Date.now()+Math.random()*10000,name:name,value:value,day:day,recurring:recurring,category:'',paid:false});
 }
-// Propagate recurring to future months
-if(recurring&&editingItem===null){
-propagateNewRecurring(curYear,curMonth,editingType,item);
+if(recurring)propagateRecurring(type,name,value,day,'',recurring);
+}else{
+var cat=document.getElementById('modalCat').value;
+var isInst=document.getElementById('toggleInst')&&document.getElementById('toggleInst').classList.contains('active');
+var curInst=1,totInst=1;
+if(isInst){
+curInst=parseInt(document.getElementById('modalCurInst').value)||1;
+totInst=parseInt(document.getElementById('modalTotInst').value)||1;
 }
-// Propagate installments to future months
-if(hasInst&&instCur<instTotal){
-propagateInstallments(curYear,curMonth,editingType,item);
+if(editId){
+for(var i=0;i<md.expenses.length;i++){
+if(md.expenses[i].id==editId){
+md.expenses[i].name=name;md.expenses[i].value=value;md.expenses[i].day=day;md.expenses[i].category=cat;md.expenses[i].recurring=recurring;md.expenses[i].installment=isInst;md.expenses[i].currentInst=curInst;md.expenses[i].totalInst=totInst;break;
+}
+}
+}else{
+md.expenses.push({id:Date.now()+Math.random()*10000,name:name,value:value,day:day,category:cat,recurring:recurring,paid:false,installment:isInst,currentInst:curInst,totalInst:totInst});
+}
+if(recurring)propagateRecurring(type,name,value,day,cat,recurring);
+if(isInst)propagateInstallments(name,value,day,cat,curInst,totInst);
 }
 saveData();closeModal();render();
 }
 
-function propagateNewRecurring(fromY,fromM,type,item){
-for(var i=1;i<=24;i++){
-var nm=fromM+i;
-var ny=fromY+Math.floor(nm/12);
-nm=nm%12;
-var key=getKey(ny,nm);
-if(!data.months[key])continue;
-var md=data.months[key];
-var list=type==='revenue'?md.revenues:md.expenses;
-var exists=list.some(function(x){return x.name===item.name});
-if(!exists){
-var newItem={name:item.name,value:item.value,day:item.day,recurring:true,paid:false};
-if(type==='expense')newItem.cat=item.cat;
+function propagateRecurring(type,name,value,day,cat,recurring){
+for(var y=0;y<data.years.length;y++){
+for(var m=0;m<12;m++){
+var mk=getMonthKey(data.years[y],m);
+if(mk<=getMonthKey(currentYear,currentMonth))continue;
+if(!data.months[mk])continue;
+var list=type=='revenue'?data.months[mk].revenues:data.months[mk].expenses;
+var found=false;
+for(var i=0;i<list.length;i++){if(list[i].name==name&&list[i].recurring){found=true;list[i].value=value;list[i].day=day;if(cat)list[i].category=cat;break;}}
+if(!found){
+var newItem={id:Date.now()+Math.random()*100000,name:name,value:value,day:day,recurring:true,paid:false};
+if(type=='expense'){newItem.category=cat;newItem.installment=false;newItem.currentInst=0;newItem.totalInst=0;}
+else{newItem.category='';}
 list.push(newItem);
 }
 }
 }
+}
 
-function propagateInstallments(fromY,fromM,type,item){
-for(var i=1;i<=(item.instTotal-item.instCur);i++){
-var nm=fromM+i;
-var ny=fromY+Math.floor(nm/12);
-nm=nm%12;
-var key=getKey(ny,nm);
-if(!data.months[key]){data.months[key]={revenues:[],expenses:[]}}
-var md=data.months[key];
-var list=type==='revenue'?md.revenues:md.expenses;
-var nextInst=item.instCur+i;
-var exists=list.some(function(x){return x.name===item.name&&x.instCur===nextInst});
-if(!exists){
-var newItem={name:item.name,value:item.value,day:item.day,paid:false,inst:nextInst+'/'+item.instTotal,instCur:nextInst,instTotal:item.instTotal};
-if(type==='expense')newItem.cat=item.cat;
-list.push(newItem);
+function propagateInstallments(name,value,day,cat,curInst,totInst){
+var startM=currentMonth;var startY=currentYear;
+for(var inst=curInst+1;inst<=totInst;inst++){
+startM++;
+if(startM>11){startM=0;startY++;}
+var mk=getMonthKey(startY,startM);
+if(!data.months[mk]){ensureMonthData(startY,startM);}
+var list=data.months[mk].expenses;
+var found=false;
+for(var i=0;i<list.length;i++){if(list[i].name==name&&list[i].installment){found=true;list[i].currentInst=inst;list[i].value=value;break;}}
+if(!found){
+list.push({id:Date.now()+Math.random()*100000,name:name,value:value,day:day,category:cat,recurring:false,paid:false,installment:true,currentInst:inst,totalInst:totInst});
 }
 }
 }
 
-function deleteItem(){
+function editItem(type,id){openModal(type,id);}
+
+function deleteItem(type,id){
 if(!confirm('Excluir este item?'))return;
-var md=getMonthData(curYear,curMonth);
-if(editingType==='revenue')md.revenues.splice(editingItem,1);
-else md.expenses.splice(editingItem,1);
+var key=getMonthKey(currentYear,currentMonth);
+var md=data.months[key];
+var list=type=='revenue'?md.revenues:md.expenses;
+for(var i=0;i<list.length;i++){
+if(list[i].id==id){list.splice(i,1);break;}
+}
 saveData();closeModal();render();
-}
-
-function delDirect(type,idx){
-if(!confirm('Excluir este item?'))return;
-var md=getMonthData(curYear,curMonth);
-if(type==='revenue')md.revenues.splice(idx,1);
-else md.expenses.splice(idx,1);
-saveData();render();
 }
 
 function removeCurrentMonth(){
-var key=getKey(curYear,curMonth);
-if(!confirm('Remover '+MONTHS[curMonth]+'/'+curYear+' do gráfico?'))return;
-if(!data.removed)data.removed=[];
-data.removed.push(key);
+var key=getMonthKey(currentYear,currentMonth);
+if(!confirm('Remover '+MONTHS[currentMonth]+'/'+currentYear+' do gráfico?'))return;
+if(!data.removedMonths)data.removedMonths={};
+data.removedMonths[key]=true;
 saveData();render();
 }
 
-function openStartingBal(){
-var sb=data.startingBal||{conta:0,reserva:0,invest:0};
-document.getElementById('sbConta').value=sb.conta||'';
-document.getElementById('sbReserva').value=sb.reserva||'';
-document.getElementById('sbInvest').value=sb.invest||'';
-document.getElementById('modalSB').classList.add('active');
+function openStartingBalance(){
+var sb=data.startingBalance||{account:0,emergency:0,investments:0};
+var html='<h3>⚙️ Ponto de Partida</h3>';
+html+='<label>💰 Saldo em Conta</label><input type="number" id="sbAccount" value="'+sb.account+'" step="0.01">';
+html+='<label>🛡️ Reserva de Emergência</label><input type="number" id="sbEmergency" value="'+sb.emergency+'" step="0.01">';
+html+='<label>📈 Investimentos</label><input type="number" id="sbInvestments" value="'+sb.investments+'" step="0.01">';
+var total=sb.account+sb.emergency+sb.investments;
+html+='<div style="text-align:center;padding:8px;background:#f8f9fa;border-radius:8px;margin:8px 0"><div style="font-size:11px;color:#666">Total disponível</div><div style="font-size:18px;font-weight:700;color:#27ae60">R$ '+formatNum(total)+'</div></div>';
+html+='<div class="modal-buttons"><button class="btn-cancel" onclick="closeModal()">Cancelar</button><button class="btn-save" onclick="saveStartingBalance()">Salvar</button></div>';
+document.getElementById('modalContent').innerHTML=html;
+document.getElementById('modalOverlay').classList.add('active');
 }
-function closeSB(){document.getElementById('modalSB').classList.remove('active')}
-function saveSB(){
-data.startingBal={
-conta:parseFloat(document.getElementById('sbConta').value)||0,
-reserva:parseFloat(document.getElementById('sbReserva').value)||0,
-invest:parseFloat(document.getElementById('sbInvest').value)||0
+
+function saveStartingBalance(){
+data.startingBalance={
+account:parseFloat(document.getElementById('sbAccount').value)||0,
+emergency:parseFloat(document.getElementById('sbEmergency').value)||0,
+investments:parseFloat(document.getElementById('sbInvestments').value)||0
 };
-saveData();closeSB();render();
+saveData();closeModal();render();
 }
 
-function toggleSuggestion(){
-var box=document.getElementById('suggestionBox');
-if(box.style.display==='none'||!box.style.display){
-box.style.display='block';
-box.innerHTML='<div class="sug-box"><h4>💡 Sugestão de Distribuição</h4>'+
-'<div class="sug-input"><label>Renda:</label><input type="number" id="sugRenda" placeholder="0.00" oninput="calcSuggestion()"></div>'+
-'<div id="sugResult"></div>'+
-'<div class="sug-note">📌 Base: 50% necessidades / 30% desejos / 20% futuro</div>'+
-'<button class="sug-close" onclick="toggleSuggestion()">Fechar</button></div>';
-}else{box.style.display='none'}
+function openSuggestion(){
+var key=getMonthKey(currentYear,currentMonth);
+var md=data.months[key];
+var totalRev=0;
+if(md){for(var i=0;i<md.revenues.length;i++)totalRev+=md.revenues[i].value;}
+var html='<h3>💡 Sugestão de Distribuição</h3>';
+html+='<div style="text-align:center;padding:8px;background:#f0f0f0;border-radius:8px;margin-bottom:10px"><div style="font-size:11px;color:#666">Baseado na receita de '+MONTHS[currentMonth]+'</div><div style="font-size:18px;font-weight:700">R$ '+formatNum(totalRev)+'</div></div>';
+html+='<div style="font-size:12px;padding:6px;background:#e8f5e9;border-radius:6px;margin-bottom:8px;text-align:center">📌 Regra 50/30/20: 50% necessidades · 30% desejos · 20% futuro</div>';
+for(var i=0;i<CATEGORIES.length;i++){
+var cat=CATEGORIES[i];
+var pct=CAT_PERCENTS[cat];
+if(pct==0)continue;
+var sug=Math.round(totalRev*pct/100);
+html+='<div style="display:flex;justify-content:space-between;padding:6px 0;border-bottom:1px solid #f0f0f0;font-size:13px"><span>'+cat+' ('+pct+'%)</span><span style="font-weight:600">R$ '+formatNum(sug)+'</span></div>';
 }
-
-function calcSuggestion(){
-var renda=parseFloat(document.getElementById('sugRenda').value)||0;
-if(renda<=0){document.getElementById('sugResult').innerHTML='';return}
-var items=[
-{cat:'🏠 Moradia',pct:30},{cat:'🍔 Alimentação',pct:15},{cat:'🚗 Transporte',pct:10},
-{cat:'🎓 Educação',pct:5},{cat:'💊 Saúde',pct:5},{cat:'🎮 Lazer',pct:10},
-{cat:'👔 Pessoal',pct:5},{cat:'📈 Investimento',pct:10},{cat:'🛡️ Reserva',pct:10}
-];
-var html='<div class="sug-result">';
-items.forEach(function(i){
-html+='<div class="sug-item"><span>'+i.cat+' ('+i.pct+'%)</span><span>'+fmt(renda*i.pct/100)+'</span></div>';
-});
-html+='</div>';
-document.getElementById('sugResult').innerHTML=html;
+html+='<div class="modal-buttons"><button class="btn-save" onclick="closeModal()">Entendi ✅</button></div>';
+document.getElementById('modalContent').innerHTML=html;
+document.getElementById('modalOverlay').classList.add('active');
 }
 
 function generatePDF(type){
-var win=window.open('','_blank');
-var html='<html><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width"><title>FinConsult - Resumo</title>';
-html+='<style>body{font-family:-apple-system,sans-serif;padding:20px;max-width:600px;margin:0 auto;font-size:14px}';
-html+='h1{font-size:18px;text-align:center;border-bottom:2px solid #1a1a2e;padding-bottom:10px}';
-html+='h2{font-size:15px;margin-top:20px;color:#1a1a2e}';
-html+='.row{display:flex;justify-content:space-between;padding:4px 0;border-bottom:1px solid #eee}';
-html+='.total{font-weight:700;border-top:2px solid #333;padding-top:6px;margin-top:4px}';
-html+='.green{color:#27ae60}.red{color:#e74c3c}';
-html+='.chart-row{display:flex;align-items:center;gap:8px;margin:3px 0}';
-html+='.chart-bar{height:16px;border-radius:3px}';
-html+='.note{font-size:11px;color:#888;text-align:center;margin-top:20px}</style></head><body>';
-if(type==='month'){
-var md=getMonthData(curYear,curMonth);
-html+='<h1>💰 FinConsult — '+MONTHS[curMonth]+'/'+curYear+'</h1>';
-var totalRec=0,totalExp=0,totalPaid=0;
-md.revenues.forEach(function(r){totalRec+=r.value});
-md.expenses.forEach(function(e){totalExp+=e.value;if(e.paid)totalPaid+=e.value});
-var remain=totalRec-totalExp;
-html+='<h2>📊 Resumo</h2>';
-html+='<div class="row"><span>Receita</span><span class="green">'+fmt(totalRec)+'</span></div>';
-html+='<div class="row"><span>Total Contas</span><span class="red">'+fmt(totalExp)+'</span></div>';
-html+='<div class="row"><span>Pago</span><span>'+fmt(totalPaid)+'</span></div>';
-html+='<div class="row"><span>Pendente</span><span>'+fmt(totalExp-totalPaid)+'</span></div>';
-html+='<div class="row total"><span>Sobra</span><span class="'+(remain>=0?'green':'red')+'">'+fmt(remain)+'</span></div>';
-html+='<h2>💵 Receitas</h2>';
-md.revenues.sort(function(a,b){return a.day-b.day}).forEach(function(r){
-html+='<div class="row"><span>'+(r.paid?'✅':'⬜')+' '+r.name+' (dia '+r.day+')</span><span class="green">+'+fmt(r.value)+'</span></div>';
-});
-html+='<h2>📋 Contas</h2>';
-md.expenses.sort(function(a,b){return a.day-b.day}).forEach(function(e){
-var inst=e.instCur?' '+e.instCur+'/'+e.instTotal:'';
-html+='<div class="row"><span>'+(e.paid?'✅':'⬜')+' '+e.name+inst+' (dia '+e.day+')</span><span class="red">-'+fmt(e.value)+'</span></div>';
-});
-// Category summary
-var cats={};
-md.expenses.forEach(function(e){var c=e.cat||'📦 Outros';if(!cats[c])cats[c]=0;cats[c]+=e.value});
-html+='<h2>📊 Por Categoria</h2>';
-Object.keys(cats).sort(function(a,b){return cats[b]-cats[a]}).forEach(function(c){
-var pct=totalExp>0?(cats[c]/totalExp*100).toFixed(0):'0';
-html+='<div class="row"><span>'+c+' ('+pct+'%)</span><span>'+fmt(cats[c])+'</span></div>';
-});
+var w=window.open('','_blank');
+var css='body{font-family:Arial,sans-serif;padding:20px;max-width:600px;margin:0 auto;font-size:13px}h1{text-align:center;font-size:20px}h2{font-size:16px;border-bottom:2px solid #333;padding-bottom:4px;margin-top:15px}table{width:100%;border-collapse:collapse;margin:8px 0}td,th{padding:5px 8px;text-align:left;border-bottom:1px solid #ddd}th{background:#f0f0f0;font-size:11px}.green{color:#27ae60}.red{color:#e74c3c}.right{text-align:right}.center{text-align:center}.big{font-size:18px;font-weight:bold}.box{border:2px solid #333;border-radius:8px;padding:12px;text-align:center;margin:10px 0}';
+var html='<html><head><title>FinConsult</title><style>'+css+'</style></head><body>';
+if(type=='month'){
+var key=getMonthKey(currentYear,currentMonth);
+var md=data.months[key];
+if(!md){w.document.write('Sem dados');return;}
+var totalRev=0,totalExp=0,totalPaid=0;
+for(var i=0;i<md.revenues.length;i++)totalRev+=md.revenues[i].value;
+for(var i=0;i<md.expenses.length;i++){totalExp+=md.expenses[i].value;if(md.expenses[i].paid)totalPaid+=md.expenses[i].value;}
+var remaining=totalRev-totalExp;
+html+='<h1>💰 FinConsult</h1><h2>'+MONTHS[currentMonth]+' / '+currentYear+'</h2>';
+html+='<div class="box"><div>Receita: <span class="green big">R$ '+formatNum(totalRev)+'</span></div>';
+html+='<div>Contas: <span class="red big">R$ '+formatNum(totalExp)+'</span></div>';
+html+='<div>Pago: R$ '+formatNum(totalPaid)+' | Pendente: R$ '+formatNum(totalExp-totalPaid)+'</div>';
+html+='<div class="big '+(remaining>=0?'green':'red')+'">'+(remaining>=0?'SOBRA':'FALTA')+': R$ '+formatNum(Math.abs(remaining))+'</div></div>';
+html+='<h2>💵 Receitas</h2><table><tr><th>Nome</th><th>Dia</th><th class="right">Valor</th><th class="center">Status</th></tr>';
+for(var i=0;i<md.revenues.length;i++){var r=md.revenues[i];html+='<tr><td>'+r.name+'</td><td>'+r.day+'</td><td class="right green">R$ '+formatNum(r.value)+'</td><td class="center">'+(r.paid?'✅':'⬜')+'</td></tr>';}
+html+='</table>';
+html+='<h2>📋 Contas</h2><table><tr><th>Nome</th><th>Dia</th><th>Categoria</th><th class="right">Valor</th><th class="center">Status</th></tr>';
+var sorted=md.expenses.slice().sort(function(a,b){return a.day-b.day;});
+for(var i=0;i<sorted.length;i++){var e=sorted[i];var inst=e.installment?' '+e.currentInst+'/'+e.totalInst:'';html+='<tr><td>'+e.name+inst+'</td><td>'+e.day+'</td><td>'+e.category+'</td><td class="right red">R$ '+formatNum(e.value)+'</td><td class="center">'+(e.paid?'✅':'⬜')+'</td></tr>';}
+html+='</table>';
+// Categories
+var catTotals={};
+for(var i=0;i<md.expenses.length;i++){var c=md.expenses[i].category;if(!catTotals[c])catTotals[c]=0;catTotals[c]+=md.expenses[i].value;}
+html+='<h2>📊 Por Categoria</h2><table><tr><th>Categoria</th><th class="right">Real</th><th class="right">Sugerido</th><th class="center">Status</th></tr>';
+for(var i=0;i<CATEGORIES.length;i++){var cat=CATEGORIES[i];var real=catTotals[cat]||0;var pct=CAT_PERCENTS[cat];var sug=Math.round(totalRev*pct/100);if(pct==0&&real==0)continue;var st=pct>0?(real<=sug?'🟢':'🔴'):'';html+='<tr><td>'+cat+'</td><td class="right">R$ '+formatNum(real)+'</td><td class="right">'+(pct>0?'R$ '+formatNum(sug):'-')+'</td><td class="center">'+st+'</td></tr>';}
+html+='</table>';
 }else{
-html+='<h1>💰 FinConsult — Resumo '+curYear+'</h1>';
-var yearTotal=0,maxBar=1;
-var monthData=[];
+html+='<h1>💰 FinConsult — '+currentYear+'</h1>';
+var sb=data.startingBalance;
+if(sb&&(sb.account+sb.emergency+sb.investments)>0){
+html+='<div class="box">Ponto de Partida<br>💰 Conta: R$ '+formatNum(sb.account)+' | 🛡️ Reserva: R$ '+formatNum(sb.emergency)+' | 📈 Invest.: R$ '+formatNum(sb.investments)+'</div>';
+}
+html+='<h2>📈 Projeção Anual</h2><table><tr><th>Mês</th><th class="right">Receita</th><th class="right">Despesa</th><th class="right">Resultado</th></tr>';
+var yearTotal=0;
 for(var m=0;m<12;m++){
-var key=getKey(curYear,m);
-if(data.removed&&data.removed.indexOf(key)>=0){monthData.push(null);continue}
-var md=data.months[key];
-if(!md){monthData.push(0);continue}
-var inc=0,exp=0;
-md.revenues.forEach(function(r){inc+=r.value});
-md.expenses.forEach(function(e){exp+=e.value});
-var bal=inc-exp;
-monthData.push(bal);
-yearTotal+=bal;
-if(Math.abs(bal)>maxBar)maxBar=Math.abs(bal);
+var mk=getMonthKey(currentYear,m);
+if(data.removedMonths&&data.removedMonths[mk])continue;
+var md=data.months[mk];var rev=0,exp=0;
+if(md){for(var i=0;i<md.revenues.length;i++)rev+=md.revenues[i].value;for(var i=0;i<md.expenses.length;i++)exp+=md.expenses[i].value;}
+var bal=rev-exp;yearTotal+=bal;
+var cls=bal>=0?'green':'red';
+html+='<tr><td>'+MONTHS[m].substr(0,3)+'</td><td class="right">R$ '+formatNum(rev)+'</td><td class="right">R$ '+formatNum(exp)+'</td><td class="right '+cls+'">R$ '+formatNum(Math.abs(bal))+(bal<0?' ⚠️':'')+'</td></tr>';
 }
-html+='<h2>📈 Gráfico Anual</h2>';
-for(var m=0;m<12;m++){
-if(monthData[m]===null)continue;
-var val=monthData[m];
-var w=Math.round(Math.abs(val)/maxBar*200);
-if(w<4&&val!==0)w=4;
-var color=val>=0?'#27ae60':'#e74c3c';
-html+='<div class="chart-row"><span style="width:40px">'+MONTHS[m].substr(0,3)+'</span>';
-html+='<div class="chart-bar" style="width:'+w+'px;background:'+color+'"></div>';
-html+='<span style="font-size:12px" class="'+(val>=0?'green':'red')+'">'+fmt(val)+'</span></div>';
+html+='</table>';
+html+='<div class="box big '+(yearTotal>=0?'green':'red')+'">Resultado do Ano: R$ '+formatNum(Math.abs(yearTotal))+(yearTotal>=0?' ✅':' ⚠️')+'</div>';
 }
-html+='<div class="row total"><span>Resultado '+curYear+'</span><span class="'+(yearTotal>=0?'green':'red')+'">'+fmt(yearTotal)+'</span></div>';
-// Monthly breakdown
-html+='<h2>📋 Detalhamento Mensal</h2>';
-for(var m=0;m<12;m++){
-var key=getKey(curYear,m);
-if(data.removed&&data.removed.indexOf(key)>=0)continue;
-var md=data.months[key];
-if(!md)continue;
-var inc=0,exp=0;
-md.revenues.forEach(function(r){inc+=r.value});
-md.expenses.forEach(function(e){exp+=e.value});
-html+='<div class="row"><span>'+MONTHS[m]+'</span><span>Rec: '+fmt(inc)+' | Desp: '+fmt(exp)+' | <span class="'+((inc-exp)>=0?'green':'red')+'">'+fmt(inc-exp)+'</span></span></div>';
-}
-}
-var sb=data.startingBal;
-if(sb&&(sb.conta>0||sb.reserva>0||sb.invest>0)){
-html+='<h2>💰 Ponto de Partida</h2>';
-html+='<div class="row"><span>Saldo em conta</span><span>'+fmt(sb.conta)+'</span></div>';
-html+='<div class="row"><span>Reserva de emergência</span><span>'+fmt(sb.reserva)+'</span></div>';
-html+='<div class="row"><span>Investimentos</span><span>'+fmt(sb.invest)+'</span></div>';
-}
-var now=new Date();
-html+='<div class="note">Gerado em '+now.toLocaleDateString('pt-BR')+' às '+now.toLocaleTimeString('pt-BR')+'</div>';
+html+='<div style="text-align:center;margin-top:20px;font-size:11px;color:#999">Gerado em '+new Date().toLocaleString('pt-BR')+' — FinConsult</div>';
 html+='</body></html>';
-win.document.write(html);
-win.document.close();
+w.document.write(html);w.document.close();
+setTimeout(function(){w.print();},500);
 }
 
-// Initialize
-loadData();
-render();
+function formatNum(n){return n.toFixed(2).replace(/\B(?=(\d{3})+(?!\d))/g,'.');}
+
+document.getElementById('modalOverlay').addEventListener('click',function(e){if(e.target===this)closeModal();});
+
+init();
 </script>
 </body>
 </html>
